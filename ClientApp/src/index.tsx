@@ -4,7 +4,7 @@ import { App } from './App'
 import configureStore from './store/configureStore';
 import { HistoryRouter } from "redux-first-history/rr6";
 import { createBrowserHistory, BrowserHistory } from 'history';
-const history = createBrowserHistory(/*{ basename: baseUrl }*/);
+const history = createBrowserHistory();
 const store = configureStore(history);
 
 ReactDOM.render(    

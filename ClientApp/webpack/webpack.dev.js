@@ -13,6 +13,7 @@ module.exports = {
       https: true,
       key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
       cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
+      historyApiFallback : true
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),
