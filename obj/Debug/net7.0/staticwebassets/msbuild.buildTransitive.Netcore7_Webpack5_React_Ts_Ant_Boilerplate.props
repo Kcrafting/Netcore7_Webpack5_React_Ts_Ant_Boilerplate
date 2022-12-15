@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.props" />
+</Project>

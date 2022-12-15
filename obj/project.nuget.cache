@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "RiGPj9GfRMWB60oH9k/HnzHLTolbjLumzTEIawyB0u1mOwQ074ZobAFtrP8RkpkXcP5equQJqOBvqiLkuY3U0w==",
+  "success": true,
+  "projectFilePath": "D:\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kcrafting\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\7.0.0\\microsoft.aspnetcore.spaproxy.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

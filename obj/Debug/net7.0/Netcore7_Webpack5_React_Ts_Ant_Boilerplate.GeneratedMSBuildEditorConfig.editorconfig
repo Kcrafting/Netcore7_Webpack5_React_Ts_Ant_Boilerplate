@@ -1,0 +1,25 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Netcore7_Webpack5_React_Ts_Ant_Boilerplate
+build_property.RootNamespace = Netcore7_Webpack5_React_Ts_Ant_Boilerplate
+build_property.ProjectDir = D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Netcore7_Webpack5_React_Ts_Ant_Boilerplate/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Netcore7_Webpack5_React_Ts_Ant_Boilerplate/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
