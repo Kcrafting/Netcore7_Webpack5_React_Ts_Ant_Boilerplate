@@ -33,6 +33,12 @@ module.exports = {
         test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
         type: 'asset/inline',
       },
+      {
+        test: /\.m?js/,
+        resolve: {
+            fullySpecified: false
+        }
+      },
     ],
   },
   output: {

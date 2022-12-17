@@ -6142,6 +6142,13 @@ rc-virtual-list@^3.2.0, rc-virtual-list@^3.4.8:
     rc-resize-observer "^1.0.0"
     rc-util "^5.15.0"
 
+react-data-grid@^7.0.0-beta.20:
+  version "7.0.0-beta.20"
+  resolved "https://registry.npmmirror.com/react-data-grid/-/react-data-grid-7.0.0-beta.20.tgz#8a130b7387b0b09fd3f3b1d57a45efd74966ead4"
+  integrity sha512-SJr425WjXGuiZBr3mCRSv9Fwwmd6MEBrBBtGuWPx8GS4FuhomQWgJHYsfXOGJPBmuayICJ1l/87Cjqri0E0ncA==
+  dependencies:
+    clsx "^1.1.1"
+
 react-dom@^17.0.1:
   version "17.0.1"
   resolved "https://registry.npmmirror.com/react-dom/-/react-dom-17.0.1.tgz"

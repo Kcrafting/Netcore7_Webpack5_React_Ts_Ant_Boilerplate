@@ -33,22 +33,25 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('Option 3', '3', <ContainerOutlined />),
+  // getItem('Option 1', '1', <PieChartOutlined />),
+  // getItem('Option 2', '2', <DesktopOutlined />),
+  // getItem('Option 3', '3', <ContainerOutlined />),
 
-  getItem('Navigation One', 'sub1', <MailOutlined />, [
-    getItem('Option 5', '5'),
-    getItem('Option 6', '6'),
-    getItem('Option 7', '7'),
-    getItem('Option 8', '8'),
+  getItem('入库', 'sub1', <MailOutlined />, [
+    getItem('产品入库导入', '5'),
+    getItem('配件入库导入', '6'),
+    getItem('其他', 'sub3', null, [getItem('入库导入设置', '7')]),
   ]),
 
-  getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
-    getItem('Option 9', '9'),
-    getItem('Option 10', '10'),
+  getItem('出库', 'sub2', <AppstoreOutlined />, [
+    getItem('产品出库导入', '9'),
+    getItem('配件出库导入', '10'),
 
-    getItem('Submenu', 'sub3', null, [getItem('Option 11', '11'), getItem('Option 12', '12')]),
+    getItem('其他', 'sub4', null, [getItem('出库导入设置', '11')]),
+  ]),
+  getItem('基础资料', 'sub5', <MailOutlined />, [
+    getItem('基础资料导入', '20'),
+    getItem('其他信息同步', '21'),
   ]),
 ];
 const App: React.FC = ({children}) => {
@@ -67,28 +70,26 @@ const App: React.FC = ({children}) => {
 
   return (
     <div style={{width: '100vw',height:'100vh',display:'flex',flexDirection:'row'}}>
-      <div style={{width: menuWidth,height:'100vh'}}>
+      <div style={{width: menuWidth,height:'100vh',backgroundColor:'rgb(0, 21, 41)'}}>
       <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
         {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </Button>
       <Menu
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={['5']}
         defaultOpenKeys={['sub1']}
         mode="inline"
         theme="dark"
+        onClick={({ item, key, keyPath, domEvent })=>{
+
+        }}
         inlineCollapsed={collapsed}
         items={items}
       />
       </div>
-      {/* <TweenOne 
-      animation={{right:'70%',duration:2000}} 
-      reverse={false} 
-      paused ={paused}  
-      style={{backgroundColor:'orange',height:'50px',width:'50px'}}> */}
-        <div style={{backgroundColor:'transparent',flex:1,transitionProperty: 'width',transitionDuration:'5s'}}>
+
+        <div style={{flex:1,transitionProperty: 'width',transitionDuration:'5s',backgroundColor:'white',maxHeight:'100vh',overflow:'scroll'}}>
           {children}
         </div>
-      {/* </TweenOne> */}
      
     </div>
   );
