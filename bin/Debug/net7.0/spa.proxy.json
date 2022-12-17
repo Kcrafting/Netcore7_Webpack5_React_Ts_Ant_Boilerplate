@@ -1,8 +1,0 @@
-{
-"SpaProxyServer": {
-"ServerUrl": "https://kcrafting.cc:44408",
-"LaunchCommand": "yarn start",
-"WorkingDirectory": "D:\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\ClientApp\\",
-"MaxTimeoutInSeconds": "120"
-}
-}
