@@ -4,20 +4,33 @@ import type { TableProps } from 'antd';
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import { VariableSizeGrid as Grid } from 'react-window';
-import { ContactsOutlined } from '@ant-design/icons';
+import { Resizable } from "react-resizable";
+import "../../../node_modules/react-resizable/css/styles.css";
+
+const ResizableTitle = (props:any) => {
+  const { onResize, width, ...restProps } = props;
+  if (width === undefined) {
+    return <th {...restProps}></th>;
+  }
+  return (
+    // 外包一层Resizable组件
+    // 其中onResize属性调用col.onResize方法
+    <Resizable width={width} height={0} onResize={onResize} >
+      <th style={{backgroundColor:'red'}} {...restProps}></th>
+    </Resizable>
+  );
+};
 
 const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) => {
   const { columns, scroll } = props;
   const [tableWidth, setTableWidth] = useState(0);
 
   const widthColumnCount = columns!.filter(({ width }) => !width).length;
-
   const mergedColumns = columns!.map((column) => {
-    console.log('column.width',column.width);
-    if (typeof(column.width)!=undefined) {
+    if (typeof(column.width) != undefined) {
       return column;
     }
-    console.log('!!!!!!column.width',column.width);
+
     return {
       ...column,
       width: Math.floor(tableWidth / widthColumnCount),
@@ -25,7 +38,6 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
   });
 
   const gridRef = useRef<any>();
-
   const [connectObject] = useState<any>(() => {
     const obj = {};
     Object.defineProperty(obj, 'scrollLeft', {
@@ -41,6 +53,7 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
         }
       },
     });
+
     return obj;
   });
 
@@ -56,8 +69,7 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
   const renderVirtualList = (rawData: object[], { scrollbarSize, ref, onScroll }: any) => {
     ref.current = connectObject;
     const totalHeight = rawData.length * 54;
-    console.log('mergedColumns',mergedColumns);
-    
+
     return (
       <Grid
         ref={gridRef}
@@ -65,41 +77,36 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
         columnCount={mergedColumns.length}
         columnWidth={(index: number) => {
           const { width } = mergedColumns[index];
-          console.log('columnWidth',totalHeight > scroll!.y! && index === mergedColumns.length - 1
-          ? (width as number) - scrollbarSize - 1
-          : (width as number));
           return totalHeight > scroll!.y! && index === mergedColumns.length - 1
             ? (width as number) - scrollbarSize - 1
             : (width as number);
         }}
-        style={{paddingLeft:'0px',paddingRight:'0px',backgroundColor:'#001529'}}
         height={scroll!.y as number}
         rowCount={rawData.length}
         rowHeight={() => 54}
-
-        width={(tableWidth)}
+        width={tableWidth}
         onScroll={({ scrollLeft }: { scrollLeft: number }) => {
           onScroll({ scrollLeft });
         }}
       >
-        {
-          ({
-            columnIndex,
-            rowIndex,
-            style,
-          }) => {
-            console.log('(style as React.CSSProperties).width as string',(style as React.CSSProperties).width as string);
-            return (
-            <div
-              className={classNames('virtual-table-cell', {
-                'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
-              })}
-              style={{...style as React.CSSProperties,width:'calc(' + (style as React.CSSProperties).width as string + 'px + 15px)',left:'calc(' + (style as React.CSSProperties).left as string + 'px + 15px)',padding:'0px'}}
-            >
-              { '['+(rawData[rowIndex] as any)[(mergedColumns as any)[columnIndex].dataIndex] +']' }
-            </div>
-          )}
-        }
+        {({
+          columnIndex,
+          rowIndex,
+          style,
+        }: {
+          columnIndex: number;
+          rowIndex: number;
+          style: React.CSSProperties;
+        }) => (
+          <div
+            className={classNames('virtual-table-cell', {
+              'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
+            })}
+            style={style}
+          >
+            {(rawData[rowIndex] as any)[(mergedColumns as any)[columnIndex].dataIndex]}
+          </div>
+        )}
       </Grid>
     );
   };
@@ -111,12 +118,14 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
       }}
     >
       <Table
-
         {...props}
         className="virtual-table"
         columns={mergedColumns}
         pagination={false}
         components={{
+          header:{
+            cell:ResizableTitle
+          },
           body: renderVirtualList as any,
         }}
       />
@@ -125,38 +134,49 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
 };
 
 
-
 // Usage
 const columns = [
-  { title: 'A', dataIndex: 'key', width: 110 },
-  { title: 'B', dataIndex: 'key', width: 170 },
-  { title: 'C', dataIndex: 'key', width: 0 },
-  // { title: 'D', dataIndex: 'key', width: 30 },
-  // { title: 'E', dataIndex: 'key', width: 50 },
-  // { title: 'F', dataIndex: 'key', width: 50 },
-  // { title: 'G', dataIndex: 'key', width: 30 },
-  // { title: 'H', dataIndex: 'key', width: 50 },
-  // { title: 'I', dataIndex: 'key', width: 50 },
-  // { title: 'J', dataIndex: 'key', width: 40 },
-  // { title: 'K', dataIndex: 'key', width: 50 },
-  // { title: 'L', dataIndex: 'key', width: 50 },
+  { title: 'A', dataIndex: 'key', width: 80  , onHeaderCell:()=>({width:80,onResize:{}}) },
+  { title: 'B', dataIndex: 'key', width: 120 , onHeaderCell:()=>({width:120,onResize:{}}) },
+  { title: 'C', dataIndex: 'key', width: 120 , onHeaderCell:()=>({width:120,onResize:{}}) },
 ];
+interface _TableProps{
+  columns:any,
+  data:any
+}
 
 const data = Array.from({ length: 100000 }, (_, key) => ({ key }));
-interface AppProps {
-  style: React.CSSProperties
-}
-const App: React.FC<AppProps> = ({ children, style }) => {
-  const [tableHeight, setTableHeight] = React.useState(600);
-  useEffect(() => {
 
-  });
-  window.onresize = () => {
-    setTableHeight(window.innerHeight - 160);
+const App: React.FC = () => {
+  //const {columns,data} =  props;
+  columns.map((col)=>{
+    col.onHeaderCell = () => ({
+      width: col.width,
+      onResize: handleResize(col)
+    });
+    return col;
+  })
+  const [_columns,set_Columns] = React.useState<Array<any>>(columns); 
+  const [_data,set_Data] = React.useState(data); 
+  const handleResize = (column:any) => (e:any,  size:any ) => {
+    console.log('触发');
+    columns.forEach((item:any) => {
+      console.log('触发22222',item,column);
+      if (item === column) {
+        console.log('赋值',item,column);
+        item.width = size.width;
+      }
+    });
+    set_Columns({...columns});
   };
+
   return (
-    <VirtualTable style={style} columns={columns} dataSource={data} scroll={{ y: tableHeight, x: '400px' }} />
-  )
+  <VirtualTable columns={_columns} dataSource={_data} scroll={{ y: 300, x: '100vw' }} />
+)
 };
+
+
+
+
 
 export default App;

@@ -4,7 +4,8 @@ const fs = require('fs')
 const path = require('path')
 module.exports = {
   mode: 'development',
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
+  //devtool: 'cheap-module-source-map',
   devServer: {
       hot: true,
       open: false,
@@ -13,7 +14,7 @@ module.exports = {
       https: true,
       key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
       cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
-      historyApiFallback : true
+      historyApiFallback : true,
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),

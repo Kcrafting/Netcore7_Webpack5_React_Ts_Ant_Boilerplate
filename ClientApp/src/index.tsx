@@ -9,8 +9,8 @@ const store = configureStore(history);
 
 ReactDOM.render(    
 <Provider store={store}> 
-    <HistoryRouter history={history}>
+    {/* <HistoryRouter history={history}> */}
         <App /> 
-    </HistoryRouter>
+    {/* </HistoryRouter> */}
 </Provider>, 
 document.getElementById('root'))

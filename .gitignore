@@ -41,7 +41,9 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-
+.vs
+.vs/
+.vs*
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
@@ -125,3 +127,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+*.v2

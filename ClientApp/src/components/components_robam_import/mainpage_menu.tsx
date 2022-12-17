@@ -85,7 +85,7 @@ const App: React.FC = ({children}) => {
       reverse={false} 
       paused ={paused}  
       style={{backgroundColor:'orange',height:'50px',width:'50px'}}> */}
-        <div style={{backgroundColor:'orange',flex:1,transitionProperty: 'width',transitionDuration:'5s'}}>
+        <div style={{backgroundColor:'transparent',flex:1,transitionProperty: 'width',transitionDuration:'5s'}}>
           {children}
         </div>
       {/* </TweenOne> */}

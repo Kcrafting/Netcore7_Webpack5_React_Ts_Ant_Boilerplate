@@ -11,6 +11,9 @@ import locale from 'antd/es/date-picker/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 import { Steps } from 'antd';
 import Tablem from './components/components_robam_import/table_test'
+import Tablen from './components/common/KTable'
+import TableTest2 from './components/test/Test2'
+import TableTest3 from './components/test/Test3'
 
 const { RangePicker } = DatePicker;
 import './app.css'
@@ -23,7 +26,7 @@ export const App = () => {
   return (
 <RobamMenu>
 <>
-      <Steps
+      {/* <Steps
         type="navigation"
         size="small"
         current={current}
@@ -49,7 +52,7 @@ export const App = () => {
             description: 'This is a description.',
           },
         ]}
-      />
+      /> */}
       {/* <Steps
         type="navigation"
         current={current}
@@ -101,16 +104,22 @@ export const App = () => {
         ]}
       /> */}
     </>
+    <a style={{fontSize:'15px',fontWeight:'bold',margin:'10px',color:'blue'}}>{'选择导入时间段(禁止超过3天!)'}</a>
 <RangePicker
+style={{margin:'10px'}}
     locale={locale}
       defaultValue={[
-        dayjs('2015/01/01 00:00:00', 'YYYY/MM/DD HH:mm:ss'), 
-        dayjs('2015/01/01 00:00:00', 'YYYY/MM/DD HH:mm:ss')]}
+        dayjs(dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss'), 'YYYY/MM/DD HH:mm:ss'), 
+        dayjs(dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss'), 'YYYY/MM/DD HH:mm:ss')]}
       format={'YYYY/MM/DD  HH:mm:ss'}
       renderExtraFooter={() => '选择的时间'} 
       showTime = {true}
     />
-    <Tablem style={{flex:1}}/>
+    
+    <Button style={{margin:'10px'}} type="primary">导入</Button>
+    <TableTest2 /> 
+    <TableTest3 /> 
+    {/* <Tablen/> */}
 </RobamMenu>
       // <Routes>
       // <Route path='/' element={<Counter />} />
