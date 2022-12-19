@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppstoreOutlined,
   ContainerOutlined,
@@ -12,67 +12,89 @@ import { MenuProps, Row } from 'antd';
 import { Button, Menu } from 'antd';
 import TweenOne from 'rc-tween-one';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { ApplicationState } from '../../store';
+import * as WeatherForecastsStore from '../../store/redux/store_robam_import/mainpage_menu_r';
+import { stat } from 'fs';
+import {useDispatch}from 'react-redux'
+
 
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
+interface type_MenuItem{
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: 'group',
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem;
+  type?: 'group'
 }
 
-const items: MenuItem[] = [
-  // getItem('Option 1', '1', <PieChartOutlined />),
-  // getItem('Option 2', '2', <DesktopOutlined />),
-  // getItem('Option 3', '3', <ContainerOutlined />),
+interface func{
+  (txt:string):MenuItem
+}
+// const AnalysisJsonToMenu:func = (json) =>  {
+//   const obj = JSON.parse(json);
+//   //let result:MenuItem = getItem('配件入库导入', '6');
+//   if(typeof obj != undefined){
 
-  getItem('入库', 'sub1', <MailOutlined />, [
-    getItem('产品入库导入', '5'),
-    getItem('配件入库导入', '6'),
-    getItem('其他', 'sub3', null, [getItem('入库导入设置', '7')]),
-  ]),
+//   }
+//   return result;
+// }
 
-  getItem('出库', 'sub2', <AppstoreOutlined />, [
-    getItem('产品出库导入', '9'),
-    getItem('配件出库导入', '10'),
 
-    getItem('其他', 'sub4', null, [getItem('出库导入设置', '11')]),
-  ]),
-  getItem('基础资料', 'sub5', <MailOutlined />, [
-    getItem('基础资料导入', '20'),
-    getItem('其他信息同步', '21'),
-  ]),
-];
-const App: React.FC = ({children}) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [paused,setPaused] = useState(true);
-  const [menuWidth,setMenuWidth] = useState(240);
+
+// const items: MenuItem[] = [
+//   // getItem('Option 1', '1', <PieChartOutlined />),
+//   // getItem('Option 2', '2', <DesktopOutlined />),
+//   // getItem('Option 3', '3', <ContainerOutlined />),
+
+//   getItem('入库', 'sub1', <MailOutlined />, [
+//     getItem('产品入库导入', '5'),
+//     getItem('配件入库导入', '6'),
+//     getItem('其他', 'sub3', null, [getItem('入库导入设置', '7')]),
+//   ]),
+//   getItem('出库', 'sub2', <AppstoreOutlined />, [
+//     getItem('产品出库导入', '9'),
+//     getItem('配件出库导入', '10'),
+//     getItem('其他', 'sub4', null, [getItem('出库导入设置', '11')]),
+//   ]),
+//   getItem('基础资料', 'sub5', <MailOutlined />, [
+//     getItem('基础资料导入', '20'),
+//     getItem('其他信息同步', '21'),
+//   ]),
+// ];
+type CounterProps =
+WeatherForecastsStore.mainpageMenuState &
+    typeof WeatherForecastsStore.actionCreators;
+const MainPage: React.FC<CounterProps> = (props) => {
+  // const [collapsed, setCollapsed] = useState(false);
+  // const [paused,setPaused] = useState(true);
+  // const [menuWidth,setMenuWidth] = useState(240);
+  const {children } = props;
+  console.log('children - ',children);
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    console.log('完成刷新',props._menuList);
+    props._menuList();
+  });
   const toggleCollapsed = () => {
     let width = 80;
-    if(menuWidth == 80){
+    if(props.menuWidth == 80){
       width = 240;
     }
-    setMenuWidth(width);
-    setCollapsed(!collapsed);
     
+    // setMenuWidth(width);
+    // setCollapsed(!collapsed);
+    dispatch({type:'CollapsedAction_Act',value:!props.collapsed})
+    dispatch({type:'MenuWidthAction_Act',value:width})
   };
 
   return (
     <div style={{width: '100vw',height:'100vh',display:'flex',flexDirection:'row'}}>
-      <div style={{width: menuWidth,height:'100vh',backgroundColor:'rgb(0, 21, 41)'}}>
+      <div style={{width: props.menuWidth,height:'100vh',backgroundColor:'rgb(0, 21, 41)'}}>
       <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
-        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </Button>
       <Menu
         defaultSelectedKeys={['5']}
@@ -82,8 +104,8 @@ const App: React.FC = ({children}) => {
         onClick={({ item, key, keyPath, domEvent })=>{
 
         }}
-        inlineCollapsed={collapsed}
-        items={items}
+        inlineCollapsed={props.collapsed}
+        items={props.menuList}
       />
       </div>
 
@@ -95,4 +117,7 @@ const App: React.FC = ({children}) => {
   );
 };
 
-export default App;
+export default connect(
+  (state:ApplicationState) => state.main,
+  WeatherForecastsStore.actionCreators
+)(MainPage as any);
