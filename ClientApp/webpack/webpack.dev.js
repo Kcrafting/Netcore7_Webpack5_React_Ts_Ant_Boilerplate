@@ -12,8 +12,8 @@ module.exports = {
       port: 44408,
       disableHostCheck: true,
       https: true,
-      key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
-      cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
+      //key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
+      //cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
       historyApiFallback: true,
       proxy: {
           '/api': {

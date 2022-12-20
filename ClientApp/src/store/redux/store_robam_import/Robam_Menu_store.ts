@@ -1,7 +1,7 @@
 import React from 'react';
 import { Action, Reducer } from 'redux';
 import { MenuProps } from 'antd';
-import { AppThunkAction } from '../../';
+import { AppThunkAction } from '../..';
 import * as icons from '@ant-design/icons';
 
 
@@ -17,7 +17,7 @@ const antIcon: { [key: string]: any } = icons;
 // STATE - This defines the type of data maintained in the Redux store.
 type MenuItem = Required<MenuProps>['items'][number];
 
-export interface mainpageMenuState {
+export interface MenuState {
     collapsed: boolean | undefined;
     paused: boolean;
     menuWidth: number;
@@ -75,6 +75,7 @@ const RecursionMenu = (_menuItem: _MenuItem): MenuItem => {
     }
     return menus;
 }
+
 export const actionCreators = {
     _collapsed: () => ({ type: 'CollapsedAction_Act' } as CollapsedAction),
     _paused: () => ({ type: 'PausedAction_Act' } as PausedAction),
@@ -105,7 +106,7 @@ export const actionCreators = {
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
-export const reducer: Reducer<mainpageMenuState> = (state: mainpageMenuState | undefined, incomingAction: Action): mainpageMenuState => {
+export const reducer: Reducer<MenuState> = (state: MenuState | undefined, incomingAction: Action): MenuState => {
     if (state === undefined) {
         return { collapsed: false, paused: true, menuWidth: 240, menuListIsLoading: false, menuList: undefined };
     }

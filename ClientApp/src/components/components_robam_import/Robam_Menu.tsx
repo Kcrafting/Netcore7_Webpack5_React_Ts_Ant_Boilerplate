@@ -13,7 +13,7 @@ import { Button, Menu } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
-import * as WeatherForecastsStore from '../../store/redux/store_robam_import/mainpage_menu_r';
+import * as Robam_Menu_store from '../../store/redux/store_robam_import/Robam_Menu_store';
 import { stat } from 'fs';
 import { useDispatch } from 'react-redux'
 import { history } from '../../index'
@@ -34,44 +34,12 @@ interface type_MenuItem {
 interface func {
     (txt: string): MenuItem
 }
-// const AnalysisJsonToMenu:func = (json) =>  {
-//   const obj = JSON.parse(json);
-//   //let result:MenuItem = getItem('配件入库导入', '6');
-//   if(typeof obj != undefined){
 
-//   }
-//   return result;
-// }
+type _MenuProps =
+    Robam_Menu_store.MenuState &
+    typeof Robam_Menu_store.actionCreators;
 
-
-
-// const items: MenuItem[] = [
-//   // getItem('Option 1', '1', <PieChartOutlined />),
-//   // getItem('Option 2', '2', <DesktopOutlined />),
-//   // getItem('Option 3', '3', <ContainerOutlined />),
-
-//   getItem('入库', 'sub1', <MailOutlined />, [
-//     getItem('产品入库导入', '5'),
-//     getItem('配件入库导入', '6'),
-//     getItem('其他', 'sub3', null, [getItem('入库导入设置', '7')]),
-//   ]),
-//   getItem('出库', 'sub2', <AppstoreOutlined />, [
-//     getItem('产品出库导入', '9'),
-//     getItem('配件出库导入', '10'),
-//     getItem('其他', 'sub4', null, [getItem('出库导入设置', '11')]),
-//   ]),
-//   getItem('基础资料', 'sub5', <MailOutlined />, [
-//     getItem('基础资料导入', '20'),
-//     getItem('其他信息同步', '21'),
-//   ]),
-// ];
-type CounterProps =
-    WeatherForecastsStore.mainpageMenuState &
-    typeof WeatherForecastsStore.actionCreators;
-const MainPage: React.FC<CounterProps> = (props) => {
-    // const [collapsed, setCollapsed] = useState(false);
-    // const [paused,setPaused] = useState(true);
-    // const [menuWidth,setMenuWidth] = useState(240);
+const Robam_Menu: React.FC<_MenuProps> = (props) => {
     const { children } = props;
     console.log('children - ', children);
     const dispatch = useDispatch();
@@ -126,6 +94,6 @@ const MainPage: React.FC<CounterProps> = (props) => {
 };
 
 export default connect(
-    (state: ApplicationState) => state.main,
-    WeatherForecastsStore.actionCreators
-)(MainPage as any);
+    (state: ApplicationState) => state.menu,
+    Robam_Menu_store.actionCreators
+)(Robam_Menu as any);
