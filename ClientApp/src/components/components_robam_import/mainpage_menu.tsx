@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import {
-  AppstoreOutlined,
-  ContainerOutlined,
-  DesktopOutlined,
-  MailOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
+    AppstoreOutlined,
+    ContainerOutlined,
+    DesktopOutlined,
+    MailOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    PieChartOutlined,
 } from '@ant-design/icons';
 import { MenuProps, Row } from 'antd';
 import { Button, Menu } from 'antd';
-import TweenOne from 'rc-tween-one';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import * as WeatherForecastsStore from '../../store/redux/store_robam_import/mainpage_menu_r';
 import { stat } from 'fs';
-import {useDispatch}from 'react-redux'
-
+import { useDispatch } from 'react-redux'
+import { history } from '../../index'
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-interface type_MenuItem{
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: 'group'
+interface type_MenuItem {
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+    type?: 'group'
 }
 
-interface func{
-  (txt:string):MenuItem
+interface func {
+    (txt: string): MenuItem
 }
 // const AnalysisJsonToMenu:func = (json) =>  {
 //   const obj = JSON.parse(json);
@@ -65,59 +66,66 @@ interface func{
 //   ]),
 // ];
 type CounterProps =
-WeatherForecastsStore.mainpageMenuState &
+    WeatherForecastsStore.mainpageMenuState &
     typeof WeatherForecastsStore.actionCreators;
 const MainPage: React.FC<CounterProps> = (props) => {
-  // const [collapsed, setCollapsed] = useState(false);
-  // const [paused,setPaused] = useState(true);
-  // const [menuWidth,setMenuWidth] = useState(240);
-  const {children } = props;
-  console.log('children - ',children);
-  const dispatch = useDispatch();
-  useEffect(()=>{
-    console.log('完成刷新',props._menuList);
-    props._menuList();
-  });
-  const toggleCollapsed = () => {
-    let width = 80;
-    if(props.menuWidth == 80){
-      width = 240;
-    }
-    
-    // setMenuWidth(width);
-    // setCollapsed(!collapsed);
-    dispatch({type:'CollapsedAction_Act',value:!props.collapsed})
-    dispatch({type:'MenuWidthAction_Act',value:width})
-  };
+    // const [collapsed, setCollapsed] = useState(false);
+    // const [paused,setPaused] = useState(true);
+    // const [menuWidth,setMenuWidth] = useState(240);
+    const { children } = props;
+    console.log('children - ', children);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        console.log('完成刷新', props._menuList);
+        props._menuList();
+    }, []);
+    const toggleCollapsed = () => {
+        let width = 80;
+        if (props.menuWidth == 80) {
+            width = 240;
+        }
+        dispatch({ type: 'CollapsedAction_Act', value: !props.collapsed })
+        dispatch({ type: 'MenuWidthAction_Act', value: width })
+    };
+    console.log('props.menuList', props.menuList)
+    return (
+       
+        <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'row' }}>
+        <div style={{ width: props.menuWidth, height: '100vh', backgroundColor: 'rgb(0, 21, 41)' }}>
+            {
+                typeof props.menuList != undefined ?
+                    <>
+                        <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
+                            {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        </Button>
+                        <Menu
+                            defaultSelectedKeys={['5']}
+                            defaultOpenKeys={['sub1']}
+                            mode="inline"
+                            theme="dark"
+                            onClick={({ item, key, keyPath, domEvent }) => {
+                                console.log('item', item, keyPath, key, domEvent)
+                                history.push(window.location.origin + "/" + key);
+                            }}
+                            inlineCollapsed={props.collapsed}
+                            items={props.menuList}
+                        />
+                    </>
+                    :
+                    <a style={{color:'white',width:props.menuWidth,backgroundColor:'orange'}}><b>载入中...<LoadingOutlined/></b></a>
+            }
 
-  return (
-    <div style={{width: '100vw',height:'100vh',display:'flex',flexDirection:'row'}}>
-      <div style={{width: props.menuWidth,height:'100vh',backgroundColor:'rgb(0, 21, 41)'}}>
-      <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
-        {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </Button>
-      <Menu
-        defaultSelectedKeys={['5']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        theme="dark"
-        onClick={({ item, key, keyPath, domEvent })=>{
-
-        }}
-        inlineCollapsed={props.collapsed}
-        items={props.menuList}
-      />
-      </div>
-
-        <div style={{flex:1,transitionProperty: 'width',transitionDuration:'5s',backgroundColor:'white',maxHeight:'100vh',overflow:'scroll'}}>
-          {children}
         </div>
-     
+
+        <div style={{ flex: 1, transitionProperty: 'width', transitionDuration: '5s', backgroundColor: 'white', maxHeight: '100vh', overflow: 'scroll' }}>
+            {children}
+        </div>
+
     </div>
-  );
+    );
 };
 
 export default connect(
-  (state:ApplicationState) => state.main,
-  WeatherForecastsStore.actionCreators
+    (state: ApplicationState) => state.main,
+    WeatherForecastsStore.actionCreators
 )(MainPage as any);

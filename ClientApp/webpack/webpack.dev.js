@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+//const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const fs = require('fs')
 const path = require('path')
 module.exports = {
@@ -14,10 +14,17 @@ module.exports = {
       https: true,
       key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
       cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
-      historyApiFallback : true,
+      historyApiFallback: true,
+      proxy: {
+          '/api': {
+              target: 'https://localhost:7011',
+              pathRewrite: { '^/api': '' },
+              secure: false
+          }
+      }
   },
   plugins: [
-    new ReactRefreshWebpackPlugin(),
+    //new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.name': JSON.stringify('Vishwas'),
     }),

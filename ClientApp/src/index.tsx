@@ -13,4 +13,6 @@ ReactDOM.render(
         <App /> 
     </HistoryRouter>
 </Provider>, 
-document.getElementById('root'))
+    document.getElementById('root'))
+
+export { history };
