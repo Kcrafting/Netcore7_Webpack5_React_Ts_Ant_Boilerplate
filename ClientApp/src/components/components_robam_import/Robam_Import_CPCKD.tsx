@@ -125,7 +125,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const next = () => {
         if(props.currentindex === 0){
             if(props.selectBillTypes.length === 0){
-                //console.log('显示对话框');
+                console.log('显示对话框');
                 //modal.warning(config);
                 props._dialogText('您还没有选择需要同步的单据类型!');
                 props._showDialog(true);
@@ -135,7 +135,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         }else{
             props._currentIndex(props.currentindex + 1);
         }
-        //console.log('props.selectBillTypes',props.selectBillTypes);
+        console.log('props.selectBillTypes',props.selectBillTypes);
       };
     
       const prev = () => {
@@ -143,7 +143,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
       };
     return(
         <div style={{margin:'20px'}}>
-            <h1><b>入库单导入</b></h1>
+            <h1><b>出库单导入</b></h1>
             <Card title={<Steps current={props.currentindex} items={items} style={{width:'70%'}} type="navigation"/>}>
             <Modal 
             title="注意" 
@@ -167,7 +167,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 style={{width:'180px',margin:'20px'}} 
                 onChange={(value: string[])=>{
                     props._selectBillType(value);
-                    //console.log(props.selectBillTypes);
+                    console.log(props.selectBillTypes);
                 }}
                 options={props.billTypes}
                 defaultValue={props.selectBillTypes}
@@ -193,7 +193,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
          />
 
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
-                //console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
+                console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
                 next();
                 setTimeout(()=>{
                     // fetch(window.location.origin + "/" + `api/Settings`, { method: 'POST' })

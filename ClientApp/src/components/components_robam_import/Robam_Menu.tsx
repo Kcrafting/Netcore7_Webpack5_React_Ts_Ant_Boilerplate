@@ -40,12 +40,14 @@ type _MenuProps =
     typeof Robam_Menu_store.actionCreators;
 
 const Robam_Menu: React.FC<_MenuProps> = (props) => {
+    //const [defaultSelectKey,setDefaultSelectKey] = React.useState<string[]>([]);
     const { children } = props;
-    console.log('children - ', children);
+    //console.log('children - ', children);
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log('完成刷新', props._menuList);
+        //console.log('完成刷新', props._menuList);
         props._menuList();
+        //console.log('props.menuList',props.menuList);
     }, []);
     const toggleCollapsed = () => {
         let width = 80;
@@ -55,7 +57,9 @@ const Robam_Menu: React.FC<_MenuProps> = (props) => {
         dispatch({ type: 'CollapsedAction_Act', value: !props.collapsed })
         dispatch({ type: 'MenuWidthAction_Act', value: width })
     };
-    console.log('props.menuList', props.menuList)
+    //console.log('props.menuList', props.menuList)
+    //console.log('window.location.href',[window.location.href.replace(window.location.origin + '/',"")]);
+    //setDefaultSelectKey([window.location.href.replace(window.location.origin + '/',"")])
     return (
        
         <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'row' }}>
@@ -67,8 +71,8 @@ const Robam_Menu: React.FC<_MenuProps> = (props) => {
                             {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         </Button>
                         <Menu
-                            defaultSelectedKeys={['5']}
-                            defaultOpenKeys={['sub1']}
+                            defaultSelectedKeys={[window.location.href.replace(window.location.origin + '/',"")]}
+                            defaultOpenKeys={['sub1','sub2','sub3','sub4','sub5']}
                             mode="inline"
                             theme="dark"
                             onClick={({ item, key, keyPath, domEvent }) => {

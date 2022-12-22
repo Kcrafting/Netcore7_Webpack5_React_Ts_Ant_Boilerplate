@@ -68,7 +68,6 @@ const RecursionMenu = (_menuItem: _MenuItem): MenuItem => {
         //let arr:_MenuItem[] = new Array<_MenuItem>();
         menus.children = new Array<_MenuItem>();
         _menuItem.children.forEach((val, index, arr) => {
-
             menus.children.push(RecursionMenu(val) as _MenuItem);
         });
         //menus.children = arr;
@@ -86,7 +85,7 @@ export const actionCreators = {
         const appState = getState();
         console.log('_menuList exceuted', appState)
         if (appState) {
-            fetch(`api/Menu`, { method: 'POST' })
+            fetch(window.location.origin + "/" + `api/Menu`, { method: 'POST' })
                 .then(response => response.json() as Promise<_MenuItem[]>)
                 .then(data => {
                     let main: MenuItem[] = new Array<MenuItem>();

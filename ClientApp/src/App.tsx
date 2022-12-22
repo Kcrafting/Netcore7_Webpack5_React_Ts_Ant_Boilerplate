@@ -8,7 +8,7 @@ import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '
 export const App = () => {
   return(
       <Routes>
-        <Route path='/' element={<Rombam_Home />} />
+        <Route path='/*' element={<Rombam_Home />} />
         <Route path='/instock22' element={<Counter />} />
         <Route path='/outstock22' element={<Counter />} />
       </Routes>
