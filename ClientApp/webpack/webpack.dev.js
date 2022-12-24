@@ -10,7 +10,7 @@ module.exports = {
       hot: true,
       open: false,
       port: 44408,
-      disableHostCheck: true,
+      //disableHostCheck: true,
       https: true,
       //key: fs.readFileSync(path.resolve(__dirname, "../https/private.key")),
       //cert: fs.readFileSync(path.resolve(__dirname, "../https/cert.pem")),
@@ -18,7 +18,7 @@ module.exports = {
       proxy: {
           '/api': {
               target: 'https://localhost:7011',
-              pathRewrite: { '^/api': '' },
+              //pathRewrite: { '^/api': '' },
               secure: false
           }
       }

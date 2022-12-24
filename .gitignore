@@ -128,3 +128,5 @@ dist
 .pnp.*
 
 *.v2
+obj/
+.vs/

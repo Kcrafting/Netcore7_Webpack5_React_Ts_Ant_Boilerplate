@@ -4,7 +4,7 @@ using Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models;
 namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class Robam_ApiController : ControllerBase//:Robam_Sync.Robam_Sync
     {
         public Result_TableMessage Post()

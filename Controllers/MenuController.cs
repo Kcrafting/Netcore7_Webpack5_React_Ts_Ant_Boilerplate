@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MenuController : ControllerBase
     {
         [HttpPost]

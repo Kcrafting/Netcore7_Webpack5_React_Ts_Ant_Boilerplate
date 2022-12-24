@@ -12,13 +12,13 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
             "para_out_timingImport", "para_out_timingDelay", "para_out_timingDelayNumber", "para_out_timingTime"
         };
         [HttpPost]
-        [Route("Settings")]
+        [Route("api/Settings")]
         public IEnumerable<Settings> Post()
         {
             return Sqlite_Helper_Static.read<Settings>().Where(i => settingItems.Contains(i.label)).ToList();
         }
         [HttpPost]
-        [Route("saveSettings")]
+        [Route("api/saveSettings")]
         public IEnumerable<Settings> Post([FromBody]IEnumerable<Settings> settings)
         {
             //Sqlite_Helper_Static.droptable<Settings>();

@@ -4,7 +4,7 @@ using Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models;
 namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ImportController : ControllerBase
     {
         [HttpPost]
