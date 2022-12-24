@@ -130,3 +130,5 @@ dist
 *.v2
 obj/
 .vs/
+DesignTimeBuild/
+v17/
