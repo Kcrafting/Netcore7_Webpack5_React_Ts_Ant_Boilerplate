@@ -7,7 +7,7 @@ import { Button } from 'antd';
 import DataGrid from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import 'dayjs/locale/zh-cn';
-import * as Robam_Import_CPRKD_store from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store';
+import * as Robam_Import_CPCKD_store from '../../store/redux/store_robam_import/Robam_Import_CPCKD_store';
 import { ApplicationState }  from '../../store'
 import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux'
@@ -22,17 +22,17 @@ import { Spin } from 'antd';
 
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
-    Robam_Import_CPRKD_store.CPRKDState &
-    typeof Robam_Import_CPRKD_store.actionCreators
+    Robam_Import_CPCKD_store.CPCKDState &
+    typeof Robam_Import_CPCKD_store.actionCreators
 
-export interface columnsDataType{
+export interface _Row{
         key:any,
         name:string,
         age?:number,
         address?:string,
         checked?:boolean,
     }
-export interface columnsType{
+export interface _Column{
         name:string,
         dataIndex:string,
         key:string,
@@ -50,7 +50,7 @@ export interface BillType{
     value:string
 }
 
-    const columns:columnsType[] = [
+    const columns:_Column[] = [
         {
             name: '序号',
             dataIndex: 'name',
@@ -78,7 +78,7 @@ export interface BillType{
         },
     ];
 
-    const dataSource:columnsDataType[] = new Array<columnsDataType>();
+    const dataSource:_Row[] = new Array<_Row>();
     for(let index_ = 0; index_ < 100000;index_++){
         dataSource.push({key:index_,name:'name',age:index_,address:'地址'+ (index_ as unknown as string),checked:false})
     }
@@ -91,9 +91,10 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     useEffect(()=>{
         //dispatch({type:'ColumnsDataAction_Act',value:dataSource});
         //dispatch({type:'ColumnsAction_Act',value:columns})
-        props._columns(columns);
-        props._columnsData(dataSource);
-        props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
+        //props._columns(columns);
+        //props._columnsData(dataSource);
+        //props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
+        props._init();
     },[]);
     //const [current, setCurrent] = React.useState(0);
     const steps = [
@@ -236,7 +237,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 3 && 
-        <DataGrid columns={props.columns as columnsType[]} rows={props.columnsData as columnsDataType[]}  />
+        <DataGrid columns={props.columns as _Column[]} rows={props.columnsData as any}  />
      }
         </div>
             <div className="steps-action">
@@ -268,6 +269,6 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
 
 
 export default connect(
-    (state: ApplicationState) => state.cprkd,
-    Robam_Import_CPRKD_store.actionCreators
+    (state: ApplicationState) => state.cpckd,
+    Robam_Import_CPCKD_store.actionCreators
 )(Robam_Import_CPRKD as any);

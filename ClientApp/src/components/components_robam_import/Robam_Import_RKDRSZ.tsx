@@ -56,7 +56,13 @@ const Robam_Import_RKDRSZ:React.FC<_CPRKDProp>=(props)=>{
         <Col span={4}>
             <a >导入间隔天数</a>
             </Col>
-            <Col span={8}><Input disabled={!props.enable} style={{width:'120px'}} value={props.delaydays} /></Col>
+            <Col span={8}><Input 
+            disabled={!props.enable} 
+            style={{width:'120px'}} 
+            value={props.delaydays} 
+            onChange={(txt)=>{
+                props._delayday(txt.currentTarget.value as unknown as  number);
+            }} /></Col>
         </Row>
         <Row gutter={24} style={{height:'50px'}}>
         <Col span={4}>
@@ -67,14 +73,44 @@ const Robam_Import_RKDRSZ:React.FC<_CPRKDProp>=(props)=>{
                 disabled={!props.enable} 
                 style={{width:'120px'}} 
                 placeholder={''} 
+                value={dayjs(props.importTime, "HH:mm:ss")}
                 defaultValue={dayjs(props.importTime, "HH:mm:ss")}
                 onChange={(val,date)=>{
                     props._importtime(date);
                 }}
                 /></Col>
         </Row>
-        <Button onClick={()=>{
-        
+        <Button type="primary" onClick={()=>{
+            console.log('props.importTime',props.importTime);
+            console.log('提交参数',JSON.stringify([
+                {label:"para_in_timingImport",value:props.enable.toString()},
+                {label:"para_in_timingDelay",value:props.delay},
+                {label:"para_in_timingDelayNumber",value:props.delaydays},
+                {label:"para_in_timingTime",value:props.importTime}
+            ]));
+
+         fetch(window.location.origin + "/" + `api/saveSettings`, { 
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            }),
+            body:JSON.stringify([
+                {label:"para_in_timingImport",value:props.enable.toString()},
+                {label:"para_in_timingDelay",value:props.delay},
+                {label:"para_in_timingDelayNumber",value:props.delaydays},
+                {label:"para_in_timingTime",value:props.importTime}
+            ]),})
+         .then(response => response.json() as Promise<Robam_Import_RKDRSZ_store.Settings[]>)
+         .then(data => {
+             let main: Robam_Import_RKDRSZ_store.Settings[] = new Array<Robam_Import_RKDRSZ_store.Settings>();
+             data.forEach((val, idx, arr) => {
+                 //main.push(RecursionMenu(val));
+             })
+             //dispatch({ type: 'MenuListAction_Act', value: main as Robam_Import_RKDRSZ_store.Settings[] });
+         })
+         .catch(err => {
+             //dispatch({ type: 'MenuListAction_Act', value: undefined });
+         });
     }}>保存设置</Button>
     </Card>
    

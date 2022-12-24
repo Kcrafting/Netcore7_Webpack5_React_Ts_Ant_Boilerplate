@@ -14,4 +14,8 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
     <SourceRoot Include="C:\Program Files (x86)\Microsoft\Xamarin\NuGet\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_ClearScript_V8_Native_win-x86 Condition=" '$(PkgMicrosoft_ClearScript_V8_Native_win-x86)' == '' ">C:\Users\Kcrafting\.nuget\packages\microsoft.clearscript.v8.native.win-x86\7.3.6</PkgMicrosoft_ClearScript_V8_Native_win-x86>
+    <PkgMicrosoft_ClearScript_V8_Native_win-x64 Condition=" '$(PkgMicrosoft_ClearScript_V8_Native_win-x64)' == '' ">C:\Users\Kcrafting\.nuget\packages\microsoft.clearscript.v8.native.win-x64\7.3.6</PkgMicrosoft_ClearScript_V8_Native_win-x64>
+  </PropertyGroup>
 </Project>

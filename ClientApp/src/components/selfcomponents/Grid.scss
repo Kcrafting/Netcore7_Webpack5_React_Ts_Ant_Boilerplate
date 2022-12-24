@@ -1,0 +1,17 @@
+.data_grid {
+  padding: 1.5rem 0;
+
+  .react-grid-HeaderCell-sortable {
+    padding-top: 3.6rem;
+  }
+
+  .react-grid-Container {
+    .react-grid-HeaderCell-sortable--ascending,
+    .react-grid-HeaderCell-sortable--descending {
+      .pull-right {
+        right: 10px;
+        bottom: 9px;
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ import { Button } from 'antd';
 import DataGrid from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import 'dayjs/locale/zh-cn';
-import * as Robam_Import_CPRKD_store from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store';
+import * as Robam_Import_JCZLDR_store from '../../store/redux/store_robam_import/Robam_Import_JCZLDR_store';
 import { ApplicationState }  from '../../store'
 import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux'
@@ -22,8 +22,8 @@ import { Spin } from 'antd';
 
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
-    Robam_Import_CPRKD_store.CPRKDState &
-    typeof Robam_Import_CPRKD_store.actionCreators
+    Robam_Import_JCZLDR_store.JCZLDRState &
+    typeof Robam_Import_JCZLDR_store.actionCreators
 
 export interface columnsDataType{
         key:any,
@@ -93,18 +93,14 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         //dispatch({type:'ColumnsAction_Act',value:columns})
         props._columns(columns);
         props._columnsData(dataSource);
-        props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
+        //props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
+        props._init();
     },[]);
     //const [current, setCurrent] = React.useState(0);
     const steps = [
         {
           title: '选择导入类型',
           content: 'First-content',
-          icon:<LoadingOutlined />
-        },
-        {
-          title: '选择时间段',
-          content: 'Second-content',
           icon:<LoadingOutlined />
         },
         {
@@ -174,7 +170,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 ></Select></>
                 
             }
-            { props.currentindex === 1 &&
+            {/* { props.currentindex === 1 &&
           <><div>
             <a style={{ fontSize: '15px', fontWeight: 'bold', margin: '10px', color: 'red' }}>{'选择导入时间段(禁止超过2天!)'}</a>
             <RangePicker
@@ -191,51 +187,24 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                  props._endDate(dates?.[1] as dayjs.Dayjs);
              }}
          />
-
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
                 console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
                 next();
                 setTimeout(()=>{
-                    // fetch(window.location.origin + "/" + `api/Settings`, { method: 'POST' })
-                    // .then(response => response.json() as Promise<Settings[]>)
-                    // .then(data => {
-                    //     let main: Settings[] = new Array<Settings>();
-                    //     data.forEach((val, idx, arr) => {
-                    //         if(val.label === "para_timingImport"){
-                    //             dispatch({ type: 'EnableAction_Act', value: val.value as unknown as boolean });
-                    //         }
-                    //         if(val.label === "para_timingDelay"){
-                    //             dispatch({ type: 'DelayAction_Act', value: val.value as unknown as Settings });
-                    //         }
-                    //         if(val.label === "para_timingDelayNumber"){
-                    //             dispatch({ type: 'DelayDaysAction_Act', value: val.value as unknown as number });
-                    //         }
-                    //         if(val.label === "para_timingTime"){
-                    //             dispatch({ type: 'ImportTimeAction_Act', value: val.value as unknown as string });
-                    //         }
-                    //     })
-                    //     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
-                    // })
-                    // .catch(err => {
-                    //     //dispatch({ type: 'MenuListAction_Act', value: undefined });
-                    // });
                 });
-                    
-                
-                
                 }}>导入产品入库单</Button>
-
-     </div>
-     </>}
+            </div>
+            </>
+            } */}
      {
-        props.currentindex === 2 && 
+        props.currentindex === 1 && 
         <><h3>导入中</h3>
         <Spin tip="Loading" size="large">
         {/* <div className="content" /> */}
         </Spin></> 
      }
      {
-        props.currentindex === 3 && 
+        props.currentindex === 2 && 
         <DataGrid columns={props.columns as columnsType[]} rows={props.columnsData as columnsDataType[]}  />
      }
         </div>
@@ -255,7 +224,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                     重新导入
                 </Button>
                 )}
-                {props.currentindex > 0 && props.currentindex !== steps.length - 1 && props.currentindex != 2 && (
+                {props.currentindex > 0 && props.currentindex !== steps.length - 1 && props.currentindex != 1 && (
                 <Button style={{ margin: '8px' }} onClick={() => prev()}>
                     上一步
                 </Button>
@@ -268,6 +237,6 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
 
 
 export default connect(
-    (state: ApplicationState) => state.cprkd,
-    Robam_Import_CPRKD_store.actionCreators
+    (state: ApplicationState) => state.jczldr,
+    Robam_Import_JCZLDR_store.actionCreators
 )(Robam_Import_CPRKD as any);

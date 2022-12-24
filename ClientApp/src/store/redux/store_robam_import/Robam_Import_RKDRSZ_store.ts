@@ -36,16 +36,17 @@ export const actionCreators = {
                 .then(data => {
                     let main: Settings[] = new Array<Settings>();
                     data.forEach((val, idx, arr) => {
-                        if(val.label === "para_timingImport"){
+                        console.log('val',val);
+                        if(val.label === "para_in_timingImport"){
                             dispatch({ type: 'EnableAction_Act', value: val.value as unknown as boolean });
                         }
-                        if(val.label === "para_timingDelay"){
+                        if(val.label === "para_in_timingDelay"){
                             dispatch({ type: 'DelayAction_Act', value: val.value as unknown as Settings });
                         }
-                        if(val.label === "para_timingDelayNumber"){
+                        if(val.label === "para_in_timingDelayNumber"){
                             dispatch({ type: 'DelayDaysAction_Act', value: val.value as unknown as number });
                         }
-                        if(val.label === "para_timingTime"){
+                        if(val.label === "para_in_timingTime"){
                             dispatch({ type: 'ImportTimeAction_Act', value: val.value as unknown as string });
                         }
                     })
