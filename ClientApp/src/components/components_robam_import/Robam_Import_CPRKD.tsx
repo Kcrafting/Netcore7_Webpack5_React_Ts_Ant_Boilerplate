@@ -21,6 +21,8 @@ import { FormatterProps } from "react-data-grid";
 import { ReactNode } from "react";
 import { Spin } from 'antd';
 import Demo from '../selfcomponents/Grid'
+import { HeaderRendererProps } from '../../store/redux/store_robam_import/types'
+
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
     Robam_Import_CPRKD_store.CPRKDState &
@@ -41,9 +43,10 @@ export interface _Column{
         key:string,
         resizable:boolean,
         type?:string,
-        width?:number
+        width?:number,
+        headerCellClass?:string,
         formatter?:(props: FormatterProps<_Row, unknown>) => ReactNode ,
-        //headerRenderer?:(props: HeaderRendererProps<_Row, unknown>) => React.ReactNode
+        headerRenderer?:(props: HeaderRendererProps<_Row, unknown>) => React.ReactNode
     }
 export interface StepsType{
     title:string,
@@ -250,7 +253,12 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      {
         props.currentindex === 3 && 
         // <DataGrid columns={props.columns as _Column[]} rows={props.columnsData as _Row[]}  />
-                        <DataGrid columns={props.columns as any} rows={props.columnsData as any}/>
+        <DataGrid 
+        columns={props.columns as any} 
+        rows={props.columnsData as any } 
+        style={{height:'calc(100vh - 350px)'}}
+        headerRowHeight = {90}
+        />
      }
         </div>
             <div className="steps-action">

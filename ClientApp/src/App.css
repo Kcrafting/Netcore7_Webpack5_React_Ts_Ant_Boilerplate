@@ -3,3 +3,11 @@ body {
     margin: 0px;
     padding: 0px;
   }
+
+.a1{
+  padding-inline: '0px!important';
+}
+
+.filter-cell > div:first-child{
+  border-block-end: 4px solid orange;
+}

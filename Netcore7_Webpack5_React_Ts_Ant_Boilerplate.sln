@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netcore7_Webpack5_React_Ts_Ant_Boilerplate", "Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj", "{FCE10129-D421-4396-B633-3DE8D69ECD88}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robam_Sync", "C:\Users\Kcrafting\Documents\Robam_Sync\Robam_Sync.csproj", "{986F240A-B219-482F-92EB-79CB24C03F7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robam_Sync", "..\Robam_Sync\Robam_Sync.csproj", "{4FB52E19-5BF3-4731-B29B-8FA87EACE9D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{FCE10129-D421-4396-B633-3DE8D69ECD88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCE10129-D421-4396-B633-3DE8D69ECD88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCE10129-D421-4396-B633-3DE8D69ECD88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{986F240A-B219-482F-92EB-79CB24C03F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{986F240A-B219-482F-92EB-79CB24C03F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{986F240A-B219-482F-92EB-79CB24C03F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{986F240A-B219-482F-92EB-79CB24C03F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB52E19-5BF3-4731-B29B-8FA87EACE9D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB52E19-5BF3-4731-B29B-8FA87EACE9D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB52E19-5BF3-4731-B29B-8FA87EACE9D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB52E19-5BF3-4731-B29B-8FA87EACE9D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

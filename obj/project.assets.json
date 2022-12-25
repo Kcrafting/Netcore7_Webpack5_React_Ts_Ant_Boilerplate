@@ -1400,8 +1400,8 @@
     },
     "Robam_Sync/1.0.0": {
       "type": "project",
-      "path": "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj",
-      "msbuildProject": "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj"
+      "path": "../Robam_Sync/Robam_Sync.csproj",
+      "msbuildProject": "../Robam_Sync/Robam_Sync.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1412,28 +1412,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kcrafting\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\kcrafting\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj",
+      "projectUniqueName": "C:\\Users\\kcrafting\\Documents\\GitHub\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj",
       "projectName": "Netcore7_Webpack5_React_Ts_Ant_Boilerplate",
-      "projectPath": "D:\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj",
-      "packagesPath": "C:\\Users\\Kcrafting\\.nuget\\packages\\",
-      "outputPath": "D:\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\obj\\",
+      "projectPath": "C:\\Users\\kcrafting\\Documents\\GitHub\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.csproj",
+      "packagesPath": "C:\\Users\\kcrafting\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kcrafting\\Documents\\GitHub\\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Kcrafting\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kcrafting\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -1447,8 +1444,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj": {
-              "projectPath": "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj"
+            "C:\\Users\\kcrafting\\Documents\\GitHub\\Robam_Sync\\Robam_Sync.csproj": {
+              "projectPath": "C:\\Users\\kcrafting\\Documents\\GitHub\\Robam_Sync\\Robam_Sync.csproj"
             }
           }
         }
