@@ -184,11 +184,11 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                     下一步
                 </Button>
                 )}
-                {props.currentindex === steps.length - 1 && (
+                {/* {props.currentindex === steps.length - 1 && (
                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {}}>
                     完成
                 </Button>
-                )}
+                )} */}
                  {props.currentindex === steps.length - 1 && (
                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {props._currentIndex(0);}}>
                     重新导入
