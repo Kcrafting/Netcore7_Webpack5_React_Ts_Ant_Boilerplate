@@ -4,6 +4,7 @@ import {_Row,_Column,StepsType,BillType} from '../../../components/components_ro
 import {Column} from 'react-data-grid'
 import { useDispatch } from 'react-redux'
 import { AppThunkAction } from '../..';
+import {TableProps_} from './Robam_Import_CPRKD_store'
 
 export interface JCZLDRState{
     startDate:dayjs.Dayjs,
@@ -46,19 +47,37 @@ export const actionCreators = {
     _dialogText:(value: string)=>({type: 'DialogTextAction_base_Act',value:value} as DialogTextAction_base),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
-        fetch(window.location.origin + "/" + `api/Billtype`, 
-        { 
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-            body:JSON.stringify({TypeName:'base'}) ,
-        })
+                fetch(window.location.origin + "/" + `api/Billtype`, 
+                { 
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                    body:JSON.stringify({TypeName:'base'}) ,
+                })
                 .then(response => response.json() as Promise<BillType[]>)
                 .then(data => {
                     //let main: BillType[] = new Array<BillType>();
                     dispatch({ type: 'BillTypesAction_base_Act', value: data });
                     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
+                })
+                .catch(err => {
+                    //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                });
+
+
+                fetch(window.location.origin + "/" + `api/recordsyncjczldr`, 
+                { 
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                })
+                .then(response => response.json() as Promise<TableProps_>)
+                .then(data => {
+
+                    dispatch({ type: 'ColumnsAction_base_Act', value: data.columnType });
+                    dispatch({ type: 'ColumnsDataAction_base_Act', value: data.rowData });
                 })
                 .catch(err => {
                     //dispatch({ type: 'MenuListAction_Act', value: undefined });

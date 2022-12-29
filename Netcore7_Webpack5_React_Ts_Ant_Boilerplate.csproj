@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="C:\Users\kcrafting\Documents\GitHub\Robam_Sync\Robam_Sync.csproj" />
+    <ProjectReference Include="C:\Users\Kcrafting\Documents\Robam_Sync\Robam_Sync.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

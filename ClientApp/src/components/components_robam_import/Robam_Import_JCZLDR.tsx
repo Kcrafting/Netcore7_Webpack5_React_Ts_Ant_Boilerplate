@@ -17,7 +17,7 @@ import { Card } from 'antd';
 import { Select } from 'antd';
 import {  Modal} from 'antd';
 const { Option } = Select;
-
+import SelfDataGrid from '../selfcomponents/SelfDataGrid'
 import { Spin } from 'antd';
 
 //import type { SelectProps } from 'antd';
@@ -50,50 +50,11 @@ export interface BillType{
     value:string
 }
 
-    const columns:columnsType[] = [
-        {
-            name: '序号',
-            dataIndex: 'name',
-            key: 'checked',
-            resizable: true,
-            type:'checkbox'
-        },
-        {
-            name: '姓名',
-            dataIndex: 'name',
-            key: 'name',
-            resizable: true
-        },
-        {
-            name: '年龄',
-            dataIndex: 'age',
-            key: 'age',
-            resizable: true
-        },
-        {
-            name: '住址',
-            dataIndex: 'address',
-            key: 'address',
-            resizable: true
-        },
-    ];
-
-    const dataSource:columnsDataType[] = new Array<columnsDataType>();
-    for(let index_ = 0; index_ < 100000;index_++){
-        dataSource.push({key:index_,name:'name',age:index_,address:'地址'+ (index_ as unknown as string),checked:false})
-    }
-    
-
 
 const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const dispatch = useDispatch();
     const [modal, contextHolder] = Modal.useModal();
     useEffect(()=>{
-        //dispatch({type:'ColumnsDataAction_Act',value:dataSource});
-        //dispatch({type:'ColumnsAction_Act',value:columns})
-        props._columns(columns);
-        props._columnsData(dataSource);
-        //props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
         props._init();
     },[]);
     //const [current, setCurrent] = React.useState(0);
@@ -170,32 +131,6 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 ></Select></>
                 
             }
-            {/* { props.currentindex === 1 &&
-          <><div>
-            <a style={{ fontSize: '15px', fontWeight: 'bold', margin: '10px', color: 'red' }}>{'选择导入时间段(禁止超过2天!)'}</a>
-            <RangePicker
-             style={{ margin: '10px' }}
-             locale={locale}
-             defaultValue={[
-                 dayjs(dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss'), 'YYYY/MM/DD HH:mm:ss'),
-                 dayjs(dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss'), 'YYYY/MM/DD HH:mm:ss')]}
-             format={'YYYY/MM/DD  HH:mm:ss'}
-             renderExtraFooter={() => '选择的时间'}
-             showTime={true}
-             onCalendarChange={(dates, dateStrings)=>{
-                 props._startDate(dates?.[0] as dayjs.Dayjs);
-                 props._endDate(dates?.[1] as dayjs.Dayjs);
-             }}
-         />
-            <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
-                console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
-                next();
-                setTimeout(()=>{
-                });
-                }}>导入产品入库单</Button>
-            </div>
-            </>
-            } */}
      {
         props.currentindex === 1 && 
         <><h3>导入中</h3>
@@ -205,13 +140,36 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 2 && 
-        <DataGrid columns={props.columns as columnsType[]} rows={props.columnsData as columnsDataType[]}  />
+        <SelfDataGrid columns={props.columns as any} rows={props.columnsData as any}  />
      }
         </div>
             <div className="steps-action">
                 {props.currentindex < steps.length - 1 && props.currentindex != 1 && props.currentindex != 2 && (
-                <Button type="primary" onClick={() => next()}>
-                    下一步
+                <Button type="primary" onClick={() => {
+                    next();
+                    if(props.currentindex === 0){
+                        fetch(window.location.origin + "/" + `api/synczczldr`, 
+                            { 
+                                method: 'POST',
+                                headers: new Headers({
+                                    'Content-Type': 'application/json'
+                                }),
+                                body:JSON.stringify({FBillTypes:props.selectBillTypes,FStartDate:props.startDate,FEndDate:props.endDate})
+                            })
+                            .then(response => response.json() as Promise<TableProps_>)
+                            .then(data => {
+                                console.log('导入完毕',data);
+                                dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
+                                dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
+                                props._currentIndex(2);
+                                //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
+                            })
+                            .catch(err => {
+                                //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                            });
+                    }
+                    }}>
+                    {props.currentindex === 0 ?'开始导入': '下一步'}
                 </Button>
                 )}
                 {props.currentindex === steps.length - 1 && (

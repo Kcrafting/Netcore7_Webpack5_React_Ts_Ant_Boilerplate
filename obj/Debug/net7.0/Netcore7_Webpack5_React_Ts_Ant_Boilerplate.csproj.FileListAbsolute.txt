@@ -30,7 +30,6 @@ D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\obj\Debug\net7.0\refint\Netcore7_W
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\obj\Debug\net7.0\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.pdb
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\obj\Debug\net7.0\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.genruntimeconfig.cache
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\obj\Debug\net7.0\ref\Netcore7_Webpack5_React_Ts_Ant_Boilerplate.dll
-D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\bin\Debug\net7.0\package.json
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\bin\Debug\net7.0\Utils\crypto-js.js
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\bin\Debug\net7.0\HtmlAgilityPack.dll
 D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\bin\Debug\net7.0\Microsoft.AspNetCore.SpaServices.Extensions.dll

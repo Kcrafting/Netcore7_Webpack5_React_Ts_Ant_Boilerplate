@@ -5,9 +5,10 @@ import {Column} from 'react-data-grid'
 import { useDispatch } from 'react-redux'
 import { AppThunkAction } from '../..';
 import React,{ useContext } from 'react';
-import { Checkbox } from 'antd';
+
 //-import type {  HeaderRendererProps }  from '../../../components/components_robam_import/types'
-import {useFocusRef} from 'react-data-grid'
+
+
 export interface CPRKDState{
     startDate:dayjs.Dayjs,
     endDate:dayjs.Dayjs,
@@ -27,6 +28,10 @@ export interface TableProps_{
     rowData:_Row[]
 }
 
+export interface Filter{
+
+}
+
 
 
 export interface StartDateAction { type: 'StartDateAction_Act', value: dayjs.Dayjs }
@@ -42,7 +47,19 @@ export interface DialogTextAction { type: 'DialogTextAction_Act', value: string 
 
 export type KnownAction = StartDateAction | EndDateAction | ColumnsDataAction | ColumnsAction | CurrentIndexAction | StepsAction | BillTypesAction | SelectBillTypesAction | ShowDialogAction | DialogTextAction;
 
-
+const parse = (jsonStr:string) => {
+    try {
+      return JSON.parse(jsonStr, (key, value) => {
+        if(value && typeof value === 'string') {
+            return value.indexOf('FUNCTION_FLAG') > -1 ? new Function(`return ${value.replace('FUNCTION_FLAG', '')}`)() : value
+        }
+        return value
+      })
+    } catch (error) {
+      console.log(error)
+      return '出错了'
+    }
+  }
 
 export const actionCreators = {
     _startDate:(value: dayjs.Dayjs)=>({type: 'StartDateAction_Act',value:value} as StartDateAction),
@@ -75,7 +92,7 @@ export const actionCreators = {
                     //dispatch({ type: 'MenuListAction_Act', value: undefined });
                 });
 
-                fetch(window.location.origin + "/" + `api/Robam_Api`, 
+                fetch(window.location.origin + "/" + `api/recordsyncinstock`, 
                 { 
                     method: 'POST',
                     headers: new Headers({
@@ -84,55 +101,9 @@ export const actionCreators = {
                 })
                 .then(response => response.json() as Promise<TableProps_>)
                 .then(data => {
-                    console.log('data',data.rowData);
-                    //let main: BillType[] = new Array<BillType>();
-                    let columnData = data.columnType.map((val,index,arr)=>{
-                        if(val.key === 'isError'){
-                            val.headerCellClass="filter-cell";
-                            val.formatter = (row) =>{
-                                return (
-                                  <Checkbox checked={row.row.isError}/>
-                                );
-                              };
-                            val.headerRenderer = (row)=>{
-                                  return (<div style={{display:'flex',flexDirection:'column',blockSize:'100%',height:'90px'}}> 
-                                      <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px',width:'100%',borderBlockEnd:'1px solid'}}>
-                                      <span><b>{row.column.name}</b></span>
-                                      </div>
-                                      <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px'}}>
-                                      <input style={{height:'35px',flex:1,width:'100%'}}/>
-                                      </div>
-                                  </div>)
-                              }
-                        }
-                        if(val.key === 'errrorTime'){
-                            val.headerCellClass="filter-cell";
-                            val.headerRenderer = (row)=>{
-                                return (<div style={{display:'flex',flexDirection:'column',blockSize:'100%',height:'90px',padding:'0px',margin:'0px',paddingInline:'-8px'}}> 
-                                    <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px',width:'100%',textAlign:'center',display:'block',borderBlockEnd:'1px solid'}}>
-                                    <span ><b>{row.column.name}</b></span>
-                                    </div>
-                                    <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px',display:'block'//,borderInlineEnd:'1px solid',borderBlockEnd:'1px solid',
-                                }}>
-                                    <input style={{height:'35px',flex:1,width:'100%'}}/>
-                                    </div>
-                                </div>)
-                            }
-                        }
-                        if(val.key === 'description'){
-                            val.headerCellClass="filter-cell";
-                            val.headerRenderer = (row)=>{
-                                return (<div style={{display:'flex',flexDirection:'column',blockSize:'100%',height:'90px'}}> 
-                                    <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px',width:'100%',borderBlockEnd:'1px solid'}}>
-                                    <span><b>{row.column.name}</b></span>
-                                    </div>
-                                    <div style={{height:'45px',maxHeight:'45px',flex:1,lineHeight:'45px'}}>
-                                    <input style={{height:'35px',flex:1,width:'100%'}}/>
-                                    </div>
-                                </div>)
-                            }
-                        }
-                    })
+                    //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
+                    console.log('data',data);
+                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
                     dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
                     dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
                     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });

@@ -15,7 +15,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
                 var item = new Result_TableMessage_RowData() { 
                     index = i.ToString(),
                     isError = Random.Shared.Next()%2 == 0 ? true : false,
-                    errrorTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"),
+                    errorTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"),
                     description = "aaaaaaas" + i.ToString(),
                     
                 };

@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "antd": "5.0.7"
-  },
-  "devDependencies": {
-    "@ant-design/icons": "^4.8.0",
-    "react-router-dom": "^6.4.5"
-  }
-}

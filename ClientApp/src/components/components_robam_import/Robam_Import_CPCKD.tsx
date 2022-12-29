@@ -17,29 +17,14 @@ import { Card } from 'antd';
 import { Select } from 'antd';
 import {  Modal} from 'antd';
 const { Option } = Select;
-
+import SelfDataGrid from '../selfcomponents/SelfDataGrid'
 import { Spin } from 'antd';
-
+import { _Column,_Row } from "./Robam_Import_CPRKD";
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
     Robam_Import_CPCKD_store.CPCKDState &
     typeof Robam_Import_CPCKD_store.actionCreators
 
-export interface _Row{
-        key:any,
-        name:string,
-        age?:number,
-        address?:string,
-        checked?:boolean,
-    }
-export interface _Column{
-        name:string,
-        dataIndex:string,
-        key:string,
-        resizable:boolean,
-        type?:string,
-        
-    }
 export interface StepsType{
     title:string,
     content:any,
@@ -49,51 +34,13 @@ export interface BillType{
     label:string,
     value:string
 }
-
-    const columns:_Column[] = [
-        {
-            name: '序号',
-            dataIndex: 'name',
-            key: 'checked',
-            resizable: true,
-            type:'checkbox'
-        },
-        {
-            name: '姓名',
-            dataIndex: 'name',
-            key: 'name',
-            resizable: true
-        },
-        {
-            name: '年龄',
-            dataIndex: 'age',
-            key: 'age',
-            resizable: true
-        },
-        {
-            name: '住址',
-            dataIndex: 'address',
-            key: 'address',
-            resizable: true
-        },
-    ];
-
-    const dataSource:_Row[] = new Array<_Row>();
-    for(let index_ = 0; index_ < 100000;index_++){
-        dataSource.push({key:index_,name:'name',age:index_,address:'地址'+ (index_ as unknown as string),checked:false})
-    }
-    
+  
 
 
 const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const dispatch = useDispatch();
     const [modal, contextHolder] = Modal.useModal();
     useEffect(()=>{
-        //dispatch({type:'ColumnsDataAction_Act',value:dataSource});
-        //dispatch({type:'ColumnsAction_Act',value:columns})
-        //props._columns(columns);
-        //props._columnsData(dataSource);
-        //props._billType([{label:'产品入库单',value:'cprkd'},{label:'配件入库单',value:'pjrkd'}]);
         props._init();
     },[]);
     //const [current, setCurrent] = React.useState(0);
@@ -195,35 +142,26 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
 
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
                 console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
-                next();
-                setTimeout(()=>{
-                    // fetch(window.location.origin + "/" + `api/Settings`, { method: 'POST' })
-                    // .then(response => response.json() as Promise<Settings[]>)
-                    // .then(data => {
-                    //     let main: Settings[] = new Array<Settings>();
-                    //     data.forEach((val, idx, arr) => {
-                    //         if(val.label === "para_timingImport"){
-                    //             dispatch({ type: 'EnableAction_Act', value: val.value as unknown as boolean });
-                    //         }
-                    //         if(val.label === "para_timingDelay"){
-                    //             dispatch({ type: 'DelayAction_Act', value: val.value as unknown as Settings });
-                    //         }
-                    //         if(val.label === "para_timingDelayNumber"){
-                    //             dispatch({ type: 'DelayDaysAction_Act', value: val.value as unknown as number });
-                    //         }
-                    //         if(val.label === "para_timingTime"){
-                    //             dispatch({ type: 'ImportTimeAction_Act', value: val.value as unknown as string });
-                    //         }
-                    //     })
-                    //     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
-                    // })
-                    // .catch(err => {
-                    //     //dispatch({ type: 'MenuListAction_Act', value: undefined });
-                    // });
-                });
-                    
-                
-                
+                            next();
+                            fetch(window.location.origin + "/" + `api/syncoutstock`, 
+                            { 
+                                method: 'POST',
+                                headers: new Headers({
+                                    'Content-Type': 'application/json'
+                                }),
+                                body:JSON.stringify({FBillTypes:props.selectBillTypes,FStartDate:props.startDate,FEndDate:props.endDate})
+                            })
+                            .then(response => response.json() as Promise<TableProps_>)
+                            .then(data => {
+                                console.log('导入完毕',data);
+                                dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
+                                dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
+                                props._currentIndex(3);
+                                //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
+                            })
+                            .catch(err => {
+                                //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                            });
                 }}>导入产品入库单</Button>
 
      </div>
@@ -237,7 +175,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 3 && 
-        <DataGrid columns={props.columns as _Column[]} rows={props.columnsData as any}  />
+        <SelfDataGrid columns={props.columns as any} rows={props.columnsData as any}  headerRowHeight={65}/>
      }
         </div>
             <div className="steps-action">
