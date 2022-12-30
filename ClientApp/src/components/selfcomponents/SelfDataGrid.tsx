@@ -23,11 +23,20 @@ export interface _Column{
     headerRenderer?:(props: HeaderRendererProps<_Row, unknown>) => React.ReactNode | undefined
 }
 
-const SelfDataGrid:React.FC<DataGridProps<_Row>> = (props)=>{
-    const {columns,rows} = props;
-    const [isErrorFilter,setIsErrorFilter] = useState<string>('all');
-    const [descriptionFilter,setDescrptionFilter] = useState<string>('');
-    const [timeFilter,setTimeFilter] = useState<string>('');
+export interface _Filter extends DataGridProps<_Row>{
+    isErrorFilter?:string,
+    descriptionFilter?:string,
+    timeFilter?:string,
+    setIsErrorFilter?:(value:string)=>any,
+    setDescrptionFilter?:(value:string)=>any,
+    setTimeFilter?:(value:string)=>any,
+}
+
+const SelfDataGrid:React.FC<_Filter> = (props)=>{
+    const {columns,rows,isErrorFilter,descriptionFilter,timeFilter,setIsErrorFilter,setDescrptionFilter,setTimeFilter} = props;
+    // const [isErrorFilter,setIsErrorFilter] = useState<string>('all');
+    // const [descriptionFilter,setDescrptionFilter] = useState<string>('');
+    // const [timeFilter,setTimeFilter] = useState<string>('');
 
     const [_isErrorFilter,set_IsErrorFilter] = React.useState<(val:_Row,idx:number,arr:readonly _Row[])=>_Row | undefined>((val,idx,arr)=>(val));
     const AddColumnHeader  = (header_columns:_Column[])=>{
@@ -56,10 +65,13 @@ const SelfDataGrid:React.FC<DataGridProps<_Row>> = (props)=>{
                         </div>
                         <div style={{height:'30px',maxHeight:'35px',flex:1,lineHeight:'30px',paddingBlock:'0px',paddingInline:'0px',padding:'2px'}}>
               <Select
-                    defaultValue="all"
+                    defaultValue={isErrorFilter}
                     style={{ width:'100%',height:'30px' }}
                     onChange={(value: string)=>{
-                        setIsErrorFilter(value);
+                        if(setIsErrorFilter!==undefined){
+                            console.log('setIsErrorFilter',setIsErrorFilter,' -> ',value);
+                            setIsErrorFilter(value);
+                        }
                     }}
                     options={[
                     {
@@ -98,8 +110,14 @@ const SelfDataGrid:React.FC<DataGridProps<_Row>> = (props)=>{
                         </div>
                         <div style={{height:'30px',maxHeight:'35px',flex:1,lineHeight:'30px',paddingBlock:'0px',paddingInline:'0px',padding:'2px'}}>
                      
-                        <Input.Search allowClear onChange={(txt)=>{
-                            setTimeFilter(txt?.currentTarget?.value??'');
+                        <Input.Search allowClear
+                        defaultValue={timeFilter}
+                        onChange={(txt)=>{
+                            
+                            if(setTimeFilter!==undefined){
+                                setTimeFilter(txt?.currentTarget?.value??'');
+                            }
+
                         }}  style={{height:'30px',flex:1,width:'100%',inlineSize:'100%'}}/>
                         </div>
                         </>)
@@ -125,9 +143,17 @@ const SelfDataGrid:React.FC<DataGridProps<_Row>> = (props)=>{
                         </div>
                         <div style={{height:'30px',maxHeight:'35px',flex:1,lineHeight:'30px',paddingBlock:'0px',paddingInline:'0px',padding:'2px'}}>
                      
-                        <Input.Search allowClear onChange={(txt)=>{
-                            setTimeFilter(txt?.currentTarget?.value??'');
-                        }}  style={{flex:1,width:'100%',inlineSize:'100%',height:'30px'}} size={"middle"}/>
+                        <Input.Search allowClear 
+                        
+                        defaultValue={descriptionFilter}
+                        onChange={(txt)=>{
+                            if(setDescrptionFilter!==undefined){
+                                console.log('txt?.currentTarget?.value',txt?.currentTarget?.value,' -> ',descriptionFilter);
+                                setDescrptionFilter(txt?.currentTarget?.value??'');
+                                
+                            }
+                        }}  
+                        style={{flex:1,width:'100%',inlineSize:'100%',height:'30px'}} size={"middle"}/>
                         </div>
                         </>
                     ) 
@@ -141,8 +167,8 @@ const SelfDataGrid:React.FC<DataGridProps<_Row>> = (props)=>{
         columns = {columns} 
         rows={(rows as _Row[]).filter((item)=>{
             if((isErrorFilter === 'all' ? true : (isErrorFilter === 'checked' ? item?.isError : !item?.isError)) && 
-               (descriptionFilter === '' || item?.description?.includes(descriptionFilter)) && 
-               (timeFilter === '' || item?.errorTime?.includes(timeFilter)))
+               (descriptionFilter === '' || item?.description?.includes(descriptionFilter??item?.description)) && 
+               (timeFilter === '' || item?.errorTime?.includes(timeFilter??item?.errorTime)))
             return isErrorFilter === 'all' ? true : (isErrorFilter === 'checked' ? item?.isError : !item?.isError);
         })} 
         headerRowHeight = {70}

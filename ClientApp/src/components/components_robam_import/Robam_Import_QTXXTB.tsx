@@ -19,7 +19,7 @@ import {  Modal} from 'antd';
 const { Option } = Select;
 import {_Row,_Column} from '../../components/components_robam_import/Robam_Import_CPRKD'
 import SelfDataGrid from '../selfcomponents/SelfDataGrid'
-
+import {TableProps_} from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store'
 import { Spin } from 'antd';
 
 //import type { SelectProps } from 'antd';
@@ -86,8 +86,7 @@ const Robam_Import_QTXXTB:React.FC<_CPRKDProp> = (props)=>{
     const next = () => {
         if(props.currentindex === 0){
             if(props.selectBillTypes.length === 0){
-                //console.log('显示对话框');
-                //modal.warning(config);
+       
                 props._dialogText('您还没有选择需要同步的单据类型!');
                 props._showDialog(true);
             }else{
@@ -96,7 +95,6 @@ const Robam_Import_QTXXTB:React.FC<_CPRKDProp> = (props)=>{
         }else{
             props._currentIndex(props.currentindex + 1);
         }
-        //console.log('props.selectBillTypes',props.selectBillTypes);
       };
     
       const prev = () => {
@@ -129,7 +127,7 @@ const Robam_Import_QTXXTB:React.FC<_CPRKDProp> = (props)=>{
                 style={{width:'180px',margin:'20px'}} 
                 onChange={(value: string[])=>{
                     props._selectBillType(value);
-                    //console.log(props.selectBillTypes);
+                 
                 }}
                 options={props.billTypes}
                 defaultValue={props.selectBillTypes}
@@ -145,14 +143,24 @@ const Robam_Import_QTXXTB:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 2 && 
-        <SelfDataGrid columns={props.columns as any} rows={props.columnsData as any}  />
+        <SelfDataGrid 
+        columns={props.columns as any} 
+        rows={props.columnsData as any}  
+        style={{height:'calc(100vh - 320px)'}}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
+        />
      }
         </div>
             <div className="steps-action">
                 {props.currentindex < steps.length - 1 && props.currentindex != 1 && props.currentindex != 2 && (
                 <Button type="primary" onClick={() => {
                     next();
-                    if(props.currentindex === 0){
+                    if(props.currentindex === 0 && props?.selectBillTypes?.length > 0){
                             fetch(window.location.origin + "/" + `api/syncqtxxtb`, 
                             { 
                                 method: 'POST',

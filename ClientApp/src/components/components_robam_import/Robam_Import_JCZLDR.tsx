@@ -19,6 +19,7 @@ import {  Modal} from 'antd';
 const { Option } = Select;
 import SelfDataGrid from '../selfcomponents/SelfDataGrid'
 import { Spin } from 'antd';
+import {TableProps_} from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store'
 
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
@@ -82,7 +83,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const next = () => {
         if(props.currentindex === 0){
             if(props.selectBillTypes.length === 0){
-                console.log('显示对话框');
+         
                 //modal.warning(config);
                 props._dialogText('您还没有选择需要同步的单据类型!');
                 props._showDialog(true);
@@ -92,7 +93,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         }else{
             props._currentIndex(props.currentindex + 1);
         }
-        console.log('props.selectBillTypes',props.selectBillTypes);
+
       };
     
       const prev = () => {
@@ -104,6 +105,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
             <Card title={<Steps current={props.currentindex} items={items} style={{width:'70%'}} type="navigation"/>}>
             <Modal 
             title="注意" 
+            footer={<Button type="primary" onClick={()=>{props._showDialog(false);}}>确定</Button>}
             open={props.showDialog} 
             onOk={()=>{
                 props._showDialog(false);
@@ -124,7 +126,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 style={{width:'180px',margin:'20px'}} 
                 onChange={(value: string[])=>{
                     props._selectBillType(value);
-                    console.log(props.selectBillTypes);
+     
                 }}
                 options={props.billTypes}
                 defaultValue={props.selectBillTypes}
@@ -140,14 +142,24 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 2 && 
-        <SelfDataGrid columns={props.columns as any} rows={props.columnsData as any}  />
+        <SelfDataGrid 
+        columns={props.columns as any} 
+        rows={props.columnsData as any}  
+        style={{height:'calc(100vh - 320px)'}}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
+        />
      }
         </div>
             <div className="steps-action">
                 {props.currentindex < steps.length - 1 && props.currentindex != 1 && props.currentindex != 2 && (
                 <Button type="primary" onClick={() => {
                     next();
-                    if(props.currentindex === 0){
+                    if(props.currentindex === 0 && props?.selectBillTypes?.length > 0){
                         fetch(window.location.origin + "/" + `api/synczczldr`, 
                             { 
                                 method: 'POST',

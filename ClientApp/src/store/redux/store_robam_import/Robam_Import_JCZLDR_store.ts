@@ -17,7 +17,9 @@ export interface JCZLDRState{
     selectBillTypes:string[],
     showDialog:boolean,
     dialogText:string,
-    
+    isErrorFilter:string,
+    descriptionFilter:string,
+    timeFilter:string,
 }
 
 export interface StartDateAction_base { type: 'StartDateAction_base_Act', value: dayjs.Dayjs }
@@ -30,8 +32,12 @@ export interface BillTypesAction_base { type: 'BillTypesAction_base_Act', value:
 export interface SelectBillTypesAction_base { type: 'SelectBillTypesAction_base_Act', value: string[] }
 export interface ShowDialogAction_base { type: 'ShowDialogAction_base_Act', value: boolean }
 export interface DialogTextAction_base { type: 'DialogTextAction_base_Act', value: string }
+export interface IsErrorFilterAction_base { type: 'IsErrorFilterAction_base_Act', value: string }
+export interface DescriptionFilterAction_base { type: 'DescriptionFilterAction_base_Act', value: string }
+export interface TimeFilterAction_base { type: 'TimeFilterAction_base_Act', value: string }
 
-export type KnownAction = StartDateAction_base | EndDateAction_base | ColumnsDataAction_base | ColumnsAction_base | CurrentIndexAction_base | StepsAction_base | BillTypesAction_base | SelectBillTypesAction_base | ShowDialogAction_base | DialogTextAction_base;
+export type KnownAction = StartDateAction_base | EndDateAction_base | ColumnsDataAction_base | ColumnsAction_base | CurrentIndexAction_base | StepsAction_base | BillTypesAction_base | SelectBillTypesAction_base | ShowDialogAction_base | DialogTextAction_base |
+IsErrorFilterAction_base | DescriptionFilterAction_base | TimeFilterAction_base;
 
 
 export const actionCreators = {
@@ -45,6 +51,9 @@ export const actionCreators = {
     _selectBillType:(value: string[])=>({type: 'SelectBillTypesAction_base_Act',value:value} as SelectBillTypesAction_base),
     _showDialog:(value: boolean)=>({type: 'ShowDialogAction_base_Act',value:value} as ShowDialogAction_base),
     _dialogText:(value: string)=>({type: 'DialogTextAction_base_Act',value:value} as DialogTextAction_base),
+    _isErrorFilter:(value: string)=>({type: 'IsErrorFilterAction_base_Act',value:value} as IsErrorFilterAction_base),
+    _descriptionFilter:(value: string)=>({type: 'DescriptionFilterAction_base_Act',value:value} as DescriptionFilterAction_base),
+    _timeFilter:(value: string)=>({type: 'TimeFilterAction_base_Act',value:value} as TimeFilterAction_base),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
                 fetch(window.location.origin + "/" + `api/Billtype`, 
@@ -98,7 +107,10 @@ export const reducer:Reducer<JCZLDRState> = (state: JCZLDRState | undefined, inc
             billTypes:new Array<BillType>(),
             selectBillTypes:new Array<string>(),
             showDialog:false,
-            dialogText:''
+            dialogText:'',
+            isErrorFilter:'all',
+            descriptionFilter:'',
+            timeFilter:''
      };
     }
 
@@ -124,6 +136,12 @@ export const reducer:Reducer<JCZLDRState> = (state: JCZLDRState | undefined, inc
             return { ...state, showDialog: action.value };
         case 'DialogTextAction_base_Act':
             return { ...state, dialogText: action.value };
+        case 'IsErrorFilterAction_base_Act':
+            return { ...state, isErrorFilter: action.value };
+        case 'DescriptionFilterAction_base_Act':
+            return { ...state, descriptionFilter: action.value };
+        case 'TimeFilterAction_base_Act':
+            return { ...state, timeFilter: action.value };
         default:
             return state;
     }

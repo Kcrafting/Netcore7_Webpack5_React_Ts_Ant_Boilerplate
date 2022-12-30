@@ -98,16 +98,14 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const next = () => {
         if(props.currentindex === 0){
             if(props.selectBillTypes.length === 0){
-                //console.log('显示对话框');
-                //modal.warning(config);
                 props._dialogText('您还没有选择需要同步的单据类型!');
                 props._showDialog(true);
+            }else{
+                props._currentIndex(props.currentindex + 1);
             }
-            props._currentIndex(props.currentindex + 1);
         }else{
             props._currentIndex(props.currentindex + 1);
         }
-        //console.log('props.selectBillTypes',props.selectBillTypes);
       };
     
       const prev = () => {
@@ -141,7 +139,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 style={{width:'180px',margin:'20px'}} 
                 onChange={(value: string[])=>{
                     props._selectBillType(value);
-                    //console.log(props.selectBillTypes);
+                
                 }}
                 options={props.billTypes}
                 defaultValue={props.selectBillTypes}
@@ -167,7 +165,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
          />
 
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
-                //console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
+      
                 props._columnsData([]);
                 next();
                 fetch(window.location.origin + "/" + `api/syncinstock`, 
@@ -180,9 +178,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 })
                 .then(response => response.json() as Promise<TableProps_>)
                 .then(data => {
-                    //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
-                    //console.log('data',oobj);
-                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
+                   
                     console.log('导入完毕',data);
                     dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
                     dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
@@ -214,7 +210,13 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         <SelfDataGrid 
         columns={props.columns as any} 
         rows={props.columnsData as any } 
-        style={{height:'calc(100vh - 350px)'}}
+        style={{height:'calc(100vh - 320px)'}}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
         />
      }
         </div>

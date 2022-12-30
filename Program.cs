@@ -1,9 +1,13 @@
+
+using Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask;
+using System.Security.AccessControl;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddBackgroundServices();
 builder.Services.AddControllersWithViews();
-
+//builder.Services.AddTransient(typeof(Microsoft.Extensions.Hosting.IHostedService), TimedService);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

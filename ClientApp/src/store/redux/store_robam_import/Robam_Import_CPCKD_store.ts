@@ -17,7 +17,9 @@ export interface CPCKDState{
     selectBillTypes:string[],
     showDialog:boolean,
     dialogText:string,
-    
+    isErrorFilter:string,
+    descriptionFilter:string,
+    timeFilter:string,
 }
 
 export interface StartDateAction_out { type: 'StartDateAction_out_Act', value: dayjs.Dayjs }
@@ -30,8 +32,12 @@ export interface BillTypesAction_out { type: 'BillTypesAction_out_Act', value: B
 export interface SelectBillTypesAction_out { type: 'SelectBillTypesAction_out_Act', value: string[] }
 export interface ShowDialogAction_out { type: 'ShowDialogAction_out_Act', value: boolean }
 export interface DialogTextAction_out { type: 'DialogTextAction_out_Act', value: string }
+export interface IsErrorFilterAction_out { type: 'IsErrorFilterAction_out_Act', value: string }
+export interface DescriptionFilterAction_out { type: 'DescriptionFilterAction_out_Act', value: string }
+export interface TimeFilterAction_out { type: 'TimeFilterAction_out_Act', value: string }
 
-export type KnownAction = StartDateAction_out | EndDateAction_out | ColumnsDataAction_out | ColumnsAction_out | CurrentIndexAction_out | StepsAction_out | BillTypesAction_out | SelectBillTypesAction_out | ShowDialogAction_out | DialogTextAction_out;
+export type KnownAction = StartDateAction_out | EndDateAction_out | ColumnsDataAction_out | ColumnsAction_out | CurrentIndexAction_out | StepsAction_out | BillTypesAction_out | SelectBillTypesAction_out | ShowDialogAction_out | DialogTextAction_out |
+IsErrorFilterAction_out | DescriptionFilterAction_out | TimeFilterAction_out;
 
 
 export const actionCreators = {
@@ -45,6 +51,9 @@ export const actionCreators = {
     _selectBillType:(value: string[])=>({type: 'SelectBillTypesAction_out_Act',value:value} as SelectBillTypesAction_out),
     _showDialog:(value: boolean)=>({type: 'ShowDialogAction_out_Act',value:value} as ShowDialogAction_out),
     _dialogText:(value: string)=>({type: 'DialogTextAction_out_Act',value:value} as DialogTextAction_out),
+    _isErrorFilter:(value: string)=>({type: 'IsErrorFilterAction_out_Act',value:value} as IsErrorFilterAction_out),
+    _descriptionFilter:(value: string)=>({type: 'DescriptionFilterAction_out_Act',value:value} as DescriptionFilterAction_out),
+    _timeFilter:(value: string)=>({type: 'TimeFilterAction_out_Act',value:value} as TimeFilterAction_out),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
                 fetch(window.location.origin + "/" + `api/Billtype`, 
@@ -76,8 +85,7 @@ export const actionCreators = {
                 .then(response => response.json() as Promise<TableProps_>)
                 .then(data => {
                     //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
-                    console.log('data',data);
-                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
+         
                     dispatch({ type: 'ColumnsAction_out_Act', value: data.columnType });
                     dispatch({ type: 'ColumnsDataAction_out_Act', value: data.rowData });
                     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
@@ -101,7 +109,10 @@ export const reducer:Reducer<CPCKDState> = (state: CPCKDState | undefined, incom
             billTypes:new Array<BillType>(),
             selectBillTypes:new Array<string>(),
             showDialog:false,
-            dialogText:''
+            dialogText:'',
+            isErrorFilter:'all',
+            descriptionFilter:'',
+            timeFilter:'',
      };
     }
 
@@ -127,6 +138,12 @@ export const reducer:Reducer<CPCKDState> = (state: CPCKDState | undefined, incom
             return { ...state, showDialog: action.value };
         case 'DialogTextAction_out_Act':
             return { ...state, dialogText: action.value };
+        case 'IsErrorFilterAction_out_Act':
+            return { ...state, isErrorFilter: action.value };
+        case 'DescriptionFilterAction_out_Act':
+            return { ...state, descriptionFilter: action.value };
+        case 'TimeFilterAction_out_Act':
+            return { ...state, timeFilter: action.value };
         default:
             return state;
     }

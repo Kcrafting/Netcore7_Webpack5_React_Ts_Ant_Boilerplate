@@ -17,7 +17,9 @@ export interface QTXXTBState{
     selectBillTypes:string[],
     showDialog:boolean,
     dialogText:string,
-    
+    isErrorFilter:string,
+    descriptionFilter:string,
+    timeFilter:string,
 }
 
 export interface StartDateAction_sync { type: 'StartDateAction_sync_Act', value: dayjs.Dayjs }
@@ -30,8 +32,12 @@ export interface BillTypesAction_sync { type: 'BillTypesAction_sync_Act', value:
 export interface SelectBillTypesAction_sync { type: 'SelectBillTypesAction_sync_Act', value: string[] }
 export interface ShowDialogAction_sync { type: 'ShowDialogAction_sync_Act', value: boolean }
 export interface DialogTextAction_sync { type: 'DialogTextAction_sync_Act', value: string }
+export interface IsErrorFilterAction_sync { type: 'IsErrorFilterAction_sync_Act', value: string }
+export interface DescriptionFilterAction_sync { type: 'DescriptionFilterAction_sync_Act', value: string }
+export interface TimeFilterAction_sync { type: 'TimeFilterAction_sync_Act', value: string }
 
-export type KnownAction = StartDateAction_sync | EndDateAction_sync | ColumnsDataAction_sync | ColumnsAction_sync | CurrentIndexAction_sync | StepsAction_sync | BillTypesAction_sync | SelectBillTypesAction_sync | ShowDialogAction_sync | DialogTextAction_sync;
+export type KnownAction = StartDateAction_sync | EndDateAction_sync | ColumnsDataAction_sync | ColumnsAction_sync | CurrentIndexAction_sync | StepsAction_sync | BillTypesAction_sync | SelectBillTypesAction_sync | ShowDialogAction_sync | DialogTextAction_sync |
+IsErrorFilterAction_sync | DescriptionFilterAction_sync | TimeFilterAction_sync;
 
 
 export const actionCreators = {
@@ -45,6 +51,9 @@ export const actionCreators = {
     _selectBillType:(value: string[])=>({type: 'SelectBillTypesAction_sync_Act',value:value} as SelectBillTypesAction_sync),
     _showDialog:(value: boolean)=>({type: 'ShowDialogAction_sync_Act',value:value} as ShowDialogAction_sync),
     _dialogText:(value: string)=>({type: 'DialogTextAction_sync_Act',value:value} as DialogTextAction_sync),
+    _isErrorFilter:(value: string)=>({type: 'IsErrorFilterAction_sync_Act',value:value} as IsErrorFilterAction_sync),
+    _descriptionFilter:(value: string)=>({type: 'DescriptionFilterAction_sync_Act',value:value} as DescriptionFilterAction_sync),
+    _timeFilter:(value: string)=>({type: 'TimeFilterAction_sync_Act',value:value} as TimeFilterAction_sync),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
                 fetch(window.location.origin + "/" + `api/Billtype`, 
@@ -65,7 +74,7 @@ export const actionCreators = {
                     //dispatch({ type: 'MenuListAction_Act', value: undefined });
                 });
 
-                fetch(window.location.origin + "/" + `api/recordsyncoutstock`, 
+                fetch(window.location.origin + "/" + `api/recordsyncqtxxtb`, 
                 { 
                     method: 'POST',
                     headers: new Headers({
@@ -74,9 +83,7 @@ export const actionCreators = {
                 })
                 .then(response => response.json() as Promise<TableProps_>)
                 .then(data => {
-                    //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
-                    console.log('data',data);
-                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
+ 
                     dispatch({ type: 'ColumnsAction_sync_Act', value: data.columnType });
                     dispatch({ type: 'ColumnsDataAction_sync_Act', value: data.rowData });
                     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
@@ -100,7 +107,10 @@ export const reducer:Reducer<QTXXTBState> = (state: QTXXTBState | undefined, inc
             billTypes:new Array<BillType>(),
             selectBillTypes:new Array<string>(),
             showDialog:false,
-            dialogText:''
+            dialogText:'',
+            isErrorFilter:'all',
+            descriptionFilter:'',
+            timeFilter:''
      };
     }
 
@@ -126,6 +136,12 @@ export const reducer:Reducer<QTXXTBState> = (state: QTXXTBState | undefined, inc
             return { ...state, showDialog: action.value };
         case 'DialogTextAction_sync_Act':
             return { ...state, dialogText: action.value };
+        case 'IsErrorFilterAction_sync_Act':
+            return { ...state, isErrorFilter: action.value };
+        case 'DescriptionFilterAction_sync_Act':
+            return { ...state, descriptionFilter: action.value };
+        case 'TimeFilterAction_sync_Act':
+            return { ...state, timeFilter: action.value };
         default:
             return state;
     }

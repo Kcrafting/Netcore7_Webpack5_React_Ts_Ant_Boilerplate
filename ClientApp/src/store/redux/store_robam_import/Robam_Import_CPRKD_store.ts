@@ -20,7 +20,9 @@ export interface CPRKDState{
     selectBillTypes:string[],
     showDialog:boolean,
     dialogText:string,
-    
+    isErrorFilter:string,
+    descriptionFilter:string,
+    timeFilter:string,
 }
 
 export interface TableProps_{
@@ -44,22 +46,12 @@ export interface BillTypesAction { type: 'BillTypesAction_Act', value: BillType[
 export interface SelectBillTypesAction { type: 'SelectBillTypesAction_Act', value: string[] }
 export interface ShowDialogAction { type: 'ShowDialogAction_Act', value: boolean }
 export interface DialogTextAction { type: 'DialogTextAction_Act', value: string }
+export interface IsErrorFilterAction { type: 'IsErrorFilterAction_Act', value: string }
+export interface DescriptionFilterAction { type: 'DescriptionFilterAction_Act', value: string }
+export interface TimeFilterAction { type: 'TimeFilterAction_Act', value: string }
 
-export type KnownAction = StartDateAction | EndDateAction | ColumnsDataAction | ColumnsAction | CurrentIndexAction | StepsAction | BillTypesAction | SelectBillTypesAction | ShowDialogAction | DialogTextAction;
-
-const parse = (jsonStr:string) => {
-    try {
-      return JSON.parse(jsonStr, (key, value) => {
-        if(value && typeof value === 'string') {
-            return value.indexOf('FUNCTION_FLAG') > -1 ? new Function(`return ${value.replace('FUNCTION_FLAG', '')}`)() : value
-        }
-        return value
-      })
-    } catch (error) {
-      console.log(error)
-      return '出错了'
-    }
-  }
+export type KnownAction = StartDateAction | EndDateAction | ColumnsDataAction | ColumnsAction | CurrentIndexAction | StepsAction | BillTypesAction | SelectBillTypesAction | ShowDialogAction | DialogTextAction | 
+IsErrorFilterAction | DescriptionFilterAction | TimeFilterAction;
 
 export const actionCreators = {
     _startDate:(value: dayjs.Dayjs)=>({type: 'StartDateAction_Act',value:value} as StartDateAction),
@@ -72,8 +64,33 @@ export const actionCreators = {
     _selectBillType:(value: string[])=>({type: 'SelectBillTypesAction_Act',value:value} as SelectBillTypesAction),
     _showDialog:(value: boolean)=>({type: 'ShowDialogAction_Act',value:value} as ShowDialogAction),
     _dialogText:(value: string)=>({type: 'DialogTextAction_Act',value:value} as DialogTextAction),
+    _isErrorFilter:(value: string)=>({type: 'IsErrorFilterAction_Act',value:value} as IsErrorFilterAction),
+    _descriptionFilter:(value: string)=>({type: 'DescriptionFilterAction_Act',value:value} as DescriptionFilterAction),
+    _timeFilter:(value: string)=>({type: 'TimeFilterAction_Act',value:value} as TimeFilterAction),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
         const appState = getState();
+                console.log('获取记录',dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss').toString());
+                fetch(window.location.origin + "/" + `api/recordsyncinstock`, 
+                { 
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                })
+                .then(response => response.json() as Promise<TableProps_>)
+                .then(data => {
+                    console.log('获得记录',dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss').toString());
+                    //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
+                    //console.log('data',data);
+                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
+                    dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
+                    dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
+                    //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
+                })
+                .catch(err => {
+                    //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                });
+
                 fetch(window.location.origin + "/" + `api/Billtype`, 
                 { 
                     method: 'POST',
@@ -92,25 +109,7 @@ export const actionCreators = {
                     //dispatch({ type: 'MenuListAction_Act', value: undefined });
                 });
 
-                fetch(window.location.origin + "/" + `api/recordsyncinstock`, 
-                { 
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    }),
-                })
-                .then(response => response.json() as Promise<TableProps_>)
-                .then(data => {
-                    //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
-                    console.log('data',data);
-                    //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
-                    dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
-                    dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
-                    //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
-                })
-                .catch(err => {
-                    //dispatch({ type: 'MenuListAction_Act', value: undefined });
-                });
+                
     },
 }
 
@@ -127,7 +126,10 @@ export const reducer:Reducer<CPRKDState> = (state: CPRKDState | undefined, incom
             billTypes:new Array<BillType>(),
             selectBillTypes:new Array<string>(),
             showDialog:false,
-            dialogText:''
+            dialogText:'',
+            isErrorFilter:'all',
+            descriptionFilter:'',
+            timeFilter:''
      };
     }
 
@@ -153,6 +155,12 @@ export const reducer:Reducer<CPRKDState> = (state: CPRKDState | undefined, incom
             return { ...state, showDialog: action.value };
         case 'DialogTextAction_Act':
             return { ...state, dialogText: action.value };
+        case 'IsErrorFilterAction_Act':
+            return { ...state, isErrorFilter: action.value };
+        case 'DescriptionFilterAction_Act':
+            return { ...state, descriptionFilter: action.value };
+        case 'TimeFilterAction_Act':
+            return { ...state, timeFilter: action.value };
         default:
             return state;
     }

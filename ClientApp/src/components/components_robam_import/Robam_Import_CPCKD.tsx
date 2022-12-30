@@ -20,6 +20,7 @@ const { Option } = Select;
 import SelfDataGrid from '../selfcomponents/SelfDataGrid'
 import { Spin } from 'antd';
 import { _Column,_Row } from "./Robam_Import_CPRKD";
+import {TableProps_} from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store'
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
     Robam_Import_CPCKD_store.CPCKDState &
@@ -83,7 +84,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         }else{
             props._currentIndex(props.currentindex + 1);
         }
-        console.log('props.selectBillTypes',props.selectBillTypes);
+        
       };
     
       const prev = () => {
@@ -96,6 +97,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
             <Modal 
             title="注意" 
             open={props.showDialog} 
+            footer={<Button type="primary" onClick={()=>{props._showDialog(false);}}>确定</Button>}
             onOk={()=>{
                 props._showDialog(false);
             }} 
@@ -115,7 +117,6 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 style={{width:'180px',margin:'20px'}} 
                 onChange={(value: string[])=>{
                     props._selectBillType(value);
-                    console.log(props.selectBillTypes);
                 }}
                 options={props.billTypes}
                 defaultValue={props.selectBillTypes}
@@ -141,7 +142,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
          />
 
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
-                console.log(' props.startDate,props.endDate ',props.startDate,props.endDate);
+               
                             next();
                             fetch(window.location.origin + "/" + `api/syncoutstock`, 
                             { 
@@ -175,7 +176,18 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      }
      {
         props.currentindex === 3 && 
-        <SelfDataGrid columns={props.columns as any} rows={props.columnsData as any}  headerRowHeight={65}/>
+        <SelfDataGrid 
+        columns={props.columns as any} 
+        rows={props.columnsData as any}  
+        headerRowHeight={65}
+        style={{height:'calc(100vh - 320px)'}}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
+        />
      }
         </div>
             <div className="steps-action">

@@ -7,9 +7,9 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
     [ApiController]
     public class SettingsController : ControllerBase
     {
-        public string[] settingItems = new string[8] { 
-            "para_in_timingImport", "para_in_timingDelay", "para_in_timingDelayNumber", "para_in_timingTime" ,
-            "para_out_timingImport", "para_out_timingDelay", "para_out_timingDelayNumber", "para_out_timingTime"
+        public static string[] settingItems = new string[10] { 
+            "para_in_timingImport", "para_in_timingDelay", "para_in_timingDelayNumber", "para_in_timingTime" ,"para_in_billTypes",
+            "para_out_timingImport", "para_out_timingDelay", "para_out_timingDelayNumber", "para_out_timingTime","para_out_billTypes"
         };
         [HttpPost]
         [Route("api/Settings")]

@@ -1407,6 +1407,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.SpaProxy >= 7.0.0",
+      "RestSharp >= 108.0.3",
       "Robam_Sync >= 1.0.0",
       "sqlite-net-pcl >= 1.8.116"
     ]
@@ -1447,9 +1448,6 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\kcrafting\\Documents\\GitHub\\Robam_Sync\\Robam_Sync.csproj": {
-              "projectPath": "C:\\Users\\kcrafting\\Documents\\GitHub\\Robam_Sync\\Robam_Sync.csproj"
-            },
             "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj": {
               "projectPath": "C:\\Users\\Kcrafting\\Documents\\Robam_Sync\\Robam_Sync.csproj"
             }
@@ -1469,6 +1467,10 @@
           "Microsoft.AspNetCore.SpaProxy": {
             "target": "Package",
             "version": "[7.0.0, )"
+          },
+          "RestSharp": {
+            "target": "Package",
+            "version": "[108.0.3, )"
           },
           "sqlite-net-pcl": {
             "target": "Package",

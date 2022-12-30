@@ -10,7 +10,9 @@ import * as Robam_Import_RKDRSZ_store from '../../store/redux/store_robam_import
 import { ApplicationState }  from '../../store';
 import { connect } from 'react-redux';
 import dayjs from "dayjs";
-
+import {BillType} from '../../components/components_robam_import/Robam_Import_CPRKD'
+import {  Modal } from 'antd';
+import SelfDataGrid from "../selfcomponents/SelfDataGrid";
 type _CPRKDProp = 
     Robam_Import_RKDRSZ_store.RKDRSZState &
     typeof Robam_Import_RKDRSZ_store.actionCreators
@@ -64,6 +66,7 @@ const Robam_Import_RKDRSZ:React.FC<_CPRKDProp>=(props)=>{
                 props._delayday(txt.currentTarget.value as unknown as  number);
             }} /></Col>
         </Row>
+
         <Row gutter={24} style={{height:'50px'}}>
         <Col span={4}>
             <a >导入时间点</a>
@@ -80,38 +83,92 @@ const Robam_Import_RKDRSZ:React.FC<_CPRKDProp>=(props)=>{
                 }}
                 /></Col>
         </Row>
-        <Button type="primary" onClick={()=>{
-            console.log('props.importTime',props.importTime);
+
+        <Row gutter={24} style={{height:'50px'}}>
+        <Col span={4}>
+            <a>选择导入单据类型</a>
+            </Col>
+            <Col span={8}>
+            <Select 
+                mode="multiple" 
+                style={{width:'120px'}} 
+                onChange={(value: string[])=>{
+                    console.log('_selectBillTypes',value);
+                    props._selectBillTypes(value);
+                
+                }}
+                options={props.billTypes}
+                value={props.selectBillTypes}
+                defaultValue={props.selectBillTypes}
+                ></Select></Col>
+        </Row>
+
+        <Button type="primary" 
+        style={{marginTop:'30px'}}
+        onClick={()=>{
+     
             console.log('提交参数',JSON.stringify([
                 {label:"para_in_timingImport",value:props.enable.toString()},
                 {label:"para_in_timingDelay",value:props.delay},
                 {label:"para_in_timingDelayNumber",value:props.delaydays},
-                {label:"para_in_timingTime",value:props.importTime}
+                {label:"para_in_timingTime",value:props.importTime},
+                {label:"para_in_billTypes",value:props.selectBillTypes}
             ]));
+            if(window.confirm('是否保存数据?')){
+                fetch(window.location.origin + "/" + `api/saveSettings`, { 
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                    body:JSON.stringify([
+                        {label:"para_in_timingImport",value:props.enable.toString()},
+                        {label:"para_in_timingDelay",value:props.delay},
+                        {label:"para_in_timingDelayNumber",value:props.delaydays},
+                        {label:"para_in_timingTime",value:props.importTime},
+                        {label:"para_in_billTypes",value:props.selectBillTypes.toString()}
+                    ]),})
+                 .then(response => response.json() as Promise<Robam_Import_RKDRSZ_store.Settings[]>)
+                 .then(data => {
+                     //let main: Robam_Import_RKDRSZ_store.Settings[] = new Array<Robam_Import_RKDRSZ_store.Settings>();
+                     data.forEach((val, idx, arr) => {
+                         //main.push(RecursionMenu(val));
+                     })
+                     window.alert('保存成功');
+                     //dispatch({ type: 'MenuListAction_Act', value: main as Robam_Import_RKDRSZ_store.Settings[] });
+                 })
+                 .catch(err => {
+                     //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                 });
+            }
+         
 
-         fetch(window.location.origin + "/" + `api/saveSettings`, { 
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-            body:JSON.stringify([
-                {label:"para_in_timingImport",value:props.enable.toString()},
-                {label:"para_in_timingDelay",value:props.delay},
-                {label:"para_in_timingDelayNumber",value:props.delaydays},
-                {label:"para_in_timingTime",value:props.importTime}
-            ]),})
-         .then(response => response.json() as Promise<Robam_Import_RKDRSZ_store.Settings[]>)
-         .then(data => {
-             let main: Robam_Import_RKDRSZ_store.Settings[] = new Array<Robam_Import_RKDRSZ_store.Settings>();
-             data.forEach((val, idx, arr) => {
-                 //main.push(RecursionMenu(val));
-             })
-             //dispatch({ type: 'MenuListAction_Act', value: main as Robam_Import_RKDRSZ_store.Settings[] });
-         })
-         .catch(err => {
-             //dispatch({ type: 'MenuListAction_Act', value: undefined });
-         });
+
+        
+
     }}>保存设置</Button>
+    <Modal open={props.showgrid} 
+    width={1000}
+    closable = {false}
+        footer={<Button type="primary" onClick={()=>{
+            //props._showDialog(false);
+            props._showgrid(false);
+        }}>确定</Button>}
+    >
+        <SelfDataGrid 
+        rows={props.rows as any} 
+        columns = {props.columns as any}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
+        >
+        </SelfDataGrid>
+    </Modal>
+     <Button type="primary"  style={{marginLeft:'30px'}} onClick={()=>{
+        props._showgrid(true);
+     }}>查看导入日志</Button>
     </Card>
    
     </div>)
