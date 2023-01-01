@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\Netcore7_Webpack5_React_Ts_Ant_Boilerplate\bin\Release\net7.0\publish\</_PublishTargetUrl>
-    <History>True|2022-12-30T09:54:33.7753651Z;True|2022-12-30T02:00:31.8302237+08:00;True|2022-12-29T23:28:25.4346164+08:00;True|2022-12-24T16:15:19.4211480+08:00;True|2022-12-24T16:10:15.3704375+08:00;</History>
+    <History>True|2023-01-01T02:36:45.5234658Z;False|2023-01-01T10:35:14.6308717+08:00;True|2022-12-30T17:54:33.7753651+08:00;True|2022-12-30T02:00:31.8302237+08:00;True|2022-12-29T23:28:25.4346164+08:00;True|2022-12-24T16:15:19.4211480+08:00;True|2022-12-24T16:10:15.3704375+08:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

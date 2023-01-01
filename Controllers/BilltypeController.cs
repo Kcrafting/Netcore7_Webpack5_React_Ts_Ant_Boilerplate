@@ -13,6 +13,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
         [HttpPost]
         public IEnumerable<Result_BillType> Post([FromBody] BillType billType )
         {
+            //Sqlite_Helper_Static.droptable<Result_BillType>();
             if (!Sqlite_Helper_Static.read<Result_BillType>().Any())
             {
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "配件入库单(含红字)",value = "pjrkd",billType = "in"});
@@ -22,6 +23,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "产品", value = "cp", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "导购员", value = "dgy", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "门店", value = "md", billType = "base" });
+                Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "配件", value = "pj", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "配件价格", value = "pjjg", billType = "sync" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "产品价格", value = "cpjg", billType = "sync" });
             }

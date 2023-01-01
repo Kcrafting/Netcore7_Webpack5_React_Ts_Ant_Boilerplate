@@ -158,6 +158,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
             <div className="steps-action">
                 {props.currentindex < steps.length - 1 && props.currentindex != 1 && props.currentindex != 2 && (
                 <Button type="primary" onClick={() => {
+                    props._columnsData([]);
                     next();
                     if(props.currentindex === 0 && props?.selectBillTypes?.length > 0){
                         fetch(window.location.origin + "/" + `api/synczczldr`, 

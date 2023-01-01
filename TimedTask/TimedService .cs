@@ -53,6 +53,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                     jobj["FStartDate"] = startDate;
                     jobj["FEndDate"] = endDate;
                     var body = JsonConvert.SerializeObject(jobj);
+                    
                     request.AddParameter("application/json", body, ParameterType.RequestBody);
                     request.AddBody(body);
                     RestResponse response = client.Execute(request);
