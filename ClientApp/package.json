@@ -1,6 +1,7 @@
 {
   "name": "react-typescript-webpack-starter",
   "version": "1.0.0",
+  "private": true,
   "license": "ISC",
   "description": "A starter template for React with Typescript using Webpack 5",
   "scripts": {
@@ -20,6 +21,7 @@
   ],
   "author": "Vishwas",
   "dependencies": {
+    "@microsoft/signalr": "^7.0.0",
     "caniuse-lite": "^1.0.30001439",
     "connected-react-router": "^6.9.3",
     "dayjs": "^1.11.7",

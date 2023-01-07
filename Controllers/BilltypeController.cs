@@ -24,6 +24,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Controllers
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "导购员", value = "dgy", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "门店", value = "md", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "配件", value = "pj", billType = "base" });
+                Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "仓库", value = "ck", billType = "base" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "配件价格", value = "pjjg", billType = "sync" });
                 Sqlite_Helper_Static.write<Result_BillType>(new Result_BillType() { label = "产品价格", value = "cpjg", billType = "sync" });
             }

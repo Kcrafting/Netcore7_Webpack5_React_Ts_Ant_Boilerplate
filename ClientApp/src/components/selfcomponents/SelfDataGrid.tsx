@@ -139,7 +139,7 @@ const SelfDataGrid:React.FC<_Filter> = (props)=>{
                             paddingInline:'8px',
                             borderBlockEndColor:'var(--rdg-border-color)'
                             }}>
-                        <span><b>{row.column.name}</b></span>
+                        <span><b>{row?.column?.name}</b></span>
                         </div>
                         <div style={{height:'30px',maxHeight:'35px',flex:1,lineHeight:'30px',paddingBlock:'0px',paddingInline:'0px',padding:'2px'}}>
                      
@@ -165,7 +165,7 @@ const SelfDataGrid:React.FC<_Filter> = (props)=>{
     return(
         <DataGrid {...props} 
         columns = {columns} 
-        rows={(rows as _Row[]).filter((item)=>{
+        rows={(rows as _Row[])?.filter((item)=>{
             if((isErrorFilter === 'all' ? true : (isErrorFilter === 'checked' ? item?.isError : !item?.isError)) && 
                (descriptionFilter === '' || item?.description?.includes(descriptionFilter??item?.description)) && 
                (timeFilter === '' || item?.errorTime?.includes(timeFilter??item?.errorTime)))

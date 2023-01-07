@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 import dayjs from 'dayjs';
-import {_Row,_Column,StepsType,BillType} from '../../../components/components_robam_import/Robam_Import_CPRKD'
+import {_Row,_Column,StepsType,BillType,_SyncMessage} from '../../../components/components_robam_import/Robam_Import_CPRKD'
 import {Column} from 'react-data-grid'
 import { useDispatch } from 'react-redux'
 import { AppThunkAction } from '../..';
@@ -27,7 +27,8 @@ export interface CPRKDState{
 
 export interface TableProps_{
     columnType:_Column[],
-    rowData:_Row[]
+    rowData:_Row[],
+    syncMessage:_SyncMessage
 }
 
 export interface Filter{

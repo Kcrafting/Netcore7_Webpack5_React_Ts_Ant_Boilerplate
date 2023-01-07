@@ -23,10 +23,14 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models
         public string description { get; set; }
         
     }
+    public class Result_TableMessage_SyncMessage
+    {
+        public bool IsDone { get; set; } = false;
+    }
     public class Result_TableMessage
     {
-        public List<Result_TableMessage_ColumnType> columnType { get; set; } = new List<Result_TableMessage_ColumnType> { 
-            new Result_TableMessage_ColumnType(){ 
+        public List<Result_TableMessage_ColumnType> columnType { get; set; } = new List<Result_TableMessage_ColumnType> {
+            new Result_TableMessage_ColumnType(){
                 name = "序号",
                 dataIndex = "index",
                 key = "index",
@@ -35,7 +39,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models
                 //formatter = "FUNCTION_FLAG function formatter ({ row, onRowChange, isCellSelected }) {\r\n        return (\r\n          <SelectCellFormatter\r\n            value={row.available}\r\n            onChange={() => {\r\n              onRowChange({ ...row, available: !row.available });\r\n            }}\r\n            isCellSelected={isCellSelected}\r\n          />\r\n        );\r\n      }",
                 headerCellClass = "filter-cell",
             },
-            new Result_TableMessage_ColumnType(){ 
+            new Result_TableMessage_ColumnType(){
                 name = "错误时间",
                 dataIndex = "errorTime",
                 key = "errorTime",
@@ -43,9 +47,9 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models
                 width = 250,
                 //formatter = "FUNCTION_FLAG function formatter ({ row, onRowChange, isCellSelected }) {\r\n        return (\r\n          <SelectCellFormatter\r\n            value={row.available}\r\n            onChange={() => {\r\n              onRowChange({ ...row, available: !row.available });\r\n            }}\r\n            isCellSelected={isCellSelected}\r\n          />\r\n        );\r\n      }",
                 headerCellClass = "filter-cell",
-                
+
             },
-            new Result_TableMessage_ColumnType(){ 
+            new Result_TableMessage_ColumnType(){
                 name = "是否错误",
                 dataIndex = "isError",
                 key = "isError",
@@ -55,7 +59,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models
                 headerCellClass = "filter-cell",
                 //headerRenderer = "FUNCTION_FLAG function headerRenderer(row){\r\n                                  return ( <>\r\n                                    <div style={{\r\n                                        height:'35px',\r\n                                        maxHeight:'35px',\r\n                                        flex:1,\r\n                                        lineHeight:'35px',\r\n                                        width:'100%',\r\n                                        borderBlockEnd:'1px solid',\r\n                                        paddingBlock:'0px',\r\n                                        paddingInline:'8px',\r\n                                        borderBlockEndColor:'var(--rdg-border-color)'\r\n                                        }}>\r\n                                    <span><b>{row.column.name}</b></span>\r\n                                    </div>\r\n                                    <div style={{height:'35px',maxHeight:'35px',flex:1,lineHeight:'35px',paddingBlock:'0px',paddingInline:'8px',padding:'1px'}}>\r\n                          <Select\r\n                                defaultValue=\"all\"\r\n                                style={{ width:'100%' }}\r\n                                onChange={(value: string)=>{\r\n                                    if(value==='all'){\r\n                                    dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData/*.filter((item)=>(item.isError?.includes(txt.currentTarget.value as string)))*/});\r\n                                    }else if (value === 'checked'){\r\n                                        dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData.filter((item)=>(item.isError))});\r\n                                    }else if(value === 'unchecked'){\r\n                                        dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData.filter((item)=>(!item.isError))});\r\n                                    }\r\n                                }}\r\n                                options={[\r\n                                {\r\n                                    label: '单选',\r\n                                    options: [\r\n                                    { label: '勾选', value: 'checked' },\r\n                                    { label: '未勾选', value: 'unchecked' },\r\n                                    ],\r\n                                },\r\n                                {\r\n                                    label: '全选',\r\n                                    options: [{ label: '全选', value: 'all' }],\r\n                                },\r\n                                ]}\r\n                            />\r\n                                    </div>\r\n                                    </>)\r\n                              }",
             },
-            new Result_TableMessage_ColumnType(){ 
+            new Result_TableMessage_ColumnType(){
                 name = "信息",
                 dataIndex = "description",
                 key = "description",
@@ -66,5 +70,6 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.Models
             },
         };
         public List<Result_TableMessage_RowData> rowData { get; set; }
+        public Result_TableMessage_SyncMessage syncMessage{ get; set; }
     }
 }

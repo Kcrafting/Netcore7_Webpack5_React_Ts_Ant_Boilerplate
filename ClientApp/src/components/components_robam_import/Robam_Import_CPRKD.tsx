@@ -24,6 +24,15 @@ import { HeaderRendererProps } from '../../store/redux/store_robam_import/types'
 import { Checkbox } from 'antd';
 import SelfDataGrid from '../selfcomponents/SelfDataGrid'
 import {TableProps_} from '../../store/redux/store_robam_import/Robam_Import_CPRKD_store'
+
+// import {
+//     JsonHubProtocol,
+//     HubConnectionState,
+//     HubConnectionBuilder,
+//     LogLevel
+//   } from '@microsoft/signalr';
+import * as signalR from "@microsoft/signalr";
+
 //import type { SelectProps } from 'antd';
 type _CPRKDProp = 
     Robam_Import_CPRKD_store.CPRKDState &
@@ -49,6 +58,10 @@ export interface _Column{
         formatter?:(props: FormatterProps<_Row, unknown>) => ReactNode ,
         headerRenderer?:(props: HeaderRendererProps<_Row, unknown>) => React.ReactNode
     }
+
+export interface _SyncMessage{
+        IsDone:boolean,
+    }
 export interface StepsType{
     title:string,
     content:any,
@@ -65,10 +78,132 @@ export interface BillType{
 const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     const dispatch = useDispatch();
     const [modal, contextHolder] = Modal.useModal();
+    const [func,set_Func] = React.useState<(arg:string)=>void>((arg:string)=>{});
+    // const setupSignalRConnection = (connectionHub:any, getAccessToken:any) => {
+    //     const options = {
+    //         //logMessageContent: isDev,
+    //         //logger: isDev ? LogLevel.Warning : LogLevel.Error,
+    //         accessTokenFactory: () => getAccessToken
+    //     };
+    //     // create the connection instance
+    //     // withAutomaticReconnect will automatically try to reconnect
+    //     // and generate a new socket connection if needed
+    //     const connection = new HubConnectionBuilder()
+    //         .withUrl(connectionHub, options)
+    //         .withAutomaticReconnect()
+    //         .withHubProtocol(new JsonHubProtocol())
+    //         .configureLogging(LogLevel.Information)
+    //         .build();
+     
+    //     // Note: to keep the connection open the serverTimeout should be
+    //     // larger than the KeepAlive value that is set on the server
+    //     // keepAliveIntervalInMilliseconds default is 15000 and we are using default
+    //     // serverTimeoutInMilliseconds default is 30000 and we are using 60000 set below
+    //     connection.serverTimeoutInMilliseconds = 60000;
+     
+    //     // re-establish the connection if connection dropped
+    //     connection.onclose(error => {
+    //         console.assert(connection.state === HubConnectionState.Disconnected);
+    //         console.log('Connection closed due to error. Try refreshing this page to restart the connection', error);
+    //     });
+     
+    //     connection.onreconnecting(error => {
+    //         console.assert(connection.state === HubConnectionState.Reconnecting);
+    //         console.log('Connection lost due to error. Reconnecting.', error);
+    //     });
+     
+    //     connection.onreconnected(connectionId => {
+    //         console.assert(connection.state === HubConnectionState.Connected);
+    //         console.log('Connection reestablished. Connected with connectionId', connectionId);
+    //     });
+     
+    //     startSignalRConnection(connection);
+     
+    //     connection.on('hotdata', res => {
+    //         console.log("SignalR get hot res:", JSON.parse(res))
+    //         let resdata = JSON.parse(res)
+             
+             
+    //     });
+     
+    //     return connection;
+    // };
+    // const startSignalRConnection = async (connection:any) => {
+    //     try {
+    //         await connection.start();
+    //         console.assert(connection.state === HubConnectionState.Connected);
+    //         console.log('SignalR connection established');
+    //     } catch (err) {
+    //         console.assert(connection.state === HubConnectionState.Disconnected);
+    //         console.error('SignalR Connection Error: ', err);
+    //         setTimeout(() => startSignalRConnection(connection), 5000);
+    //     }
+    // };
+    // const FnsignalR = async () =>{
+     
+    //     let token = "你的token"
+    //     // console.log(token,"----token signalr---")<br>　　　　　　　　　　//调用热数据传入api token
+    //     setupSignalRConnection("/api/hotdatahub",token)
+    // }
+    var cancelFunc:any;
+    let connection:signalR.HubConnection;
     useEffect(()=>{
         props._init();
     },[]);
+    useEffect(()=>{
+       
+        //FnsignalR();
+        console.log('初始化SignlR');
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl("api/hub",{withCredentials:true,skipNegotiation: true,transport: signalR.HttpTransportType.WebSockets})
+            .build();
+        const act = ()=> connection.send("newMessage", {
+            Token:'',
+            BillType:'INSTOCK'
+        });
+        var psetFunc:any;
+        const setFunc = ()=> {
+            psetFunc = setTimeout(act, 1000)
+        };
+        cancelFunc= ()=> clearTimeout(psetFunc);
+        connection.on("ConnectionSlow",()=>{
+            console.log('SignlR状态,ConnectionSlow');
+        });
+        connection.on("Reconnecting",()=>{
+            console.log('SignlR状态,Reconnecting');
+        });
+        connection.on("Reconnected",()=>{
+            console.log('SignlR状态,Reconnected');
+        });
+        connection.on("Closed",()=>{
+            console.log('SignlR状态,Closed');
+        });
+        connection.start().then(()=>{
+            console.log('SignlR连接成功.发送信息');
+            setFunc();
+            
+        })
+        console.log('初始化SignlR 1.' ,connection);
+        connection.on("messageReceived", (result:TableProps_) => {
+            //const m = document.createElement("div");
+            //m.innerHTML = `<div class="message-author">${username}</div><div>${message}</div>`;      
+            //divMessages.appendChild(m);
+            //divMessages.scrollTop = divMessages.scrollHeight;
+            if(result.columnType != undefined){
+                dispatch({ type: 'ColumnsAction_Act', value: result.columnType });
+            }
+            if(result.rowData != undefined){
+                dispatch({ type: 'ColumnsDataAction_Act', value: result.rowData });
+            }
+            
+            console.log('SignalR 接收信息:',result)
+            });
+        // const send =  (arg:string)=>connection.send("newMessage", 'ddd', arg)
+        //     .then(() => {
 
+        //     });
+        //     set_Func(send);
+    },[])
     const steps = [
         {
           title: '选择导入类型',
@@ -182,7 +317,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                     console.log('导入完毕',data);
                     dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
                     dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
-                    props._currentIndex(3);
+                    //props._currentIndex(3);
                     //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
                 })
                 .catch(err => {
@@ -202,7 +337,19 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         <><h3>导入中</h3>
         <Spin tip="Loading" size="large">
         {/* <div className="content" /> */}
-        </Spin></> 
+        </Spin>
+        <SelfDataGrid 
+        columns={props.columns as any} 
+        rows={props.columnsData as any } 
+        style={{height:'calc(100vh - 320px)'}}
+        isErrorFilter = {props.isErrorFilter}
+        descriptionFilter = {props.descriptionFilter}
+        timeFilter = {props.timeFilter}
+        setIsErrorFilter = {props._isErrorFilter}
+        setDescrptionFilter = {props._descriptionFilter}
+        setTimeFilter = {props._timeFilter}
+        />
+        </> 
      }
      {
         props.currentindex === 3 && 
@@ -232,9 +379,38 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                 </Button>
                 )} */}
                  {props.currentindex === steps.length - 1 && (
+                    <>
                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {props._currentIndex(0);}}>
                     重新导入
                 </Button>
+                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {
+                     //func('hellow');
+                     fetch(window.location.origin + "/" + `api/test`, 
+                        { 
+                        method: 'POST',
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('结果',data)
+                            console.log('获得记录',dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss').toString());
+                            //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
+                            //console.log('data',data);
+                            //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
+                            // dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
+                            // dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
+                            //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
+                        })
+                        .catch(err => {
+                            //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                        });
+
+                 }}>
+                 测试SignlR
+                </Button>
+                </>
                 )}
                 {props.currentindex > 0 && props.currentindex !== steps.length - 1 && props.currentindex != 2 && (
                 <Button style={{ margin: '8px' }} onClick={() => prev()}>
