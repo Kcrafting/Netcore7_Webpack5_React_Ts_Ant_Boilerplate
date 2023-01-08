@@ -61,6 +61,7 @@ export interface _Column{
 
 export interface _SyncMessage{
         IsDone:boolean,
+        Tips:string,
     }
 export interface StepsType{
     title:string,
@@ -220,11 +221,11 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
           content: 'Last-content',
           icon:<LoadingOutlined />
         },
-        {
-            title: '查看导入结果',
-            content: 'dd',
-            icon:<LoadingOutlined />
-          },
+        // {
+        //     title: '查看导入结果',
+        //     content: 'dd',
+        //     icon:<LoadingOutlined />
+        //   },
       ];
 
 
@@ -335,9 +336,11 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      {
         props.currentindex === 2 && 
         <><h3>导入中</h3>
-        <Spin tip="Loading" size="large">
-        {/* <div className="content" /> */}
+        {
+            props.showDialog &&
+        <Spin tip={props.showProgressTips} size="large">
         </Spin>
+        }
         <SelfDataGrid 
         columns={props.columns as any} 
         rows={props.columnsData as any } 
@@ -351,7 +354,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         />
         </> 
      }
-     {
+     {/* {
         props.currentindex === 3 && 
         // <DataGrid columns={props.columns as _Column[]} rows={props.columnsData as _Row[]}  />
         <SelfDataGrid 
@@ -365,7 +368,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
         setDescrptionFilter = {props._descriptionFilter}
         setTimeFilter = {props._timeFilter}
         />
-     }
+     } */}
         </div>
             <div className="steps-action">
                 {props.currentindex < steps.length - 1 && props.currentindex != 1 && props.currentindex != 2 && (
@@ -378,7 +381,8 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                     完成
                 </Button>
                 )} */}
-                 {props.currentindex === steps.length - 1 && (
+                 {(props.currentindex === steps.length - 1 && !props.showDialog) && (
+                    
                     <>
                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {props._currentIndex(0);}}>
                     重新导入

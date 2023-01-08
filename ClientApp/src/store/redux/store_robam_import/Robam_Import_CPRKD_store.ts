@@ -23,12 +23,15 @@ export interface CPRKDState{
     isErrorFilter:string,
     descriptionFilter:string,
     timeFilter:string,
+    showPrograss:boolean,
+    showProgressTips:string,
 }
 
 export interface TableProps_{
     columnType:_Column[],
     rowData:_Row[],
-    syncMessage:_SyncMessage
+    syncMessage:_SyncMessage,
+    
 }
 
 export interface Filter{
@@ -50,9 +53,11 @@ export interface DialogTextAction { type: 'DialogTextAction_Act', value: string 
 export interface IsErrorFilterAction { type: 'IsErrorFilterAction_Act', value: string }
 export interface DescriptionFilterAction { type: 'DescriptionFilterAction_Act', value: string }
 export interface TimeFilterAction { type: 'TimeFilterAction_Act', value: string }
+export interface ShowPrograssAction { type: 'ShowPrograssAction_Act', value: boolean }
+export interface ShowProgressTipsAction { type: 'ShowProgressTipsAction_Act', value: string }
 
 export type KnownAction = StartDateAction | EndDateAction | ColumnsDataAction | ColumnsAction | CurrentIndexAction | StepsAction | BillTypesAction | SelectBillTypesAction | ShowDialogAction | DialogTextAction | 
-IsErrorFilterAction | DescriptionFilterAction | TimeFilterAction;
+IsErrorFilterAction | DescriptionFilterAction | TimeFilterAction | ShowPrograssAction | ShowProgressTipsAction;
 
 export const actionCreators = {
     _startDate:(value: dayjs.Dayjs)=>({type: 'StartDateAction_Act',value:value} as StartDateAction),
@@ -66,6 +71,8 @@ export const actionCreators = {
     _showDialog:(value: boolean)=>({type: 'ShowDialogAction_Act',value:value} as ShowDialogAction),
     _dialogText:(value: string)=>({type: 'DialogTextAction_Act',value:value} as DialogTextAction),
     _isErrorFilter:(value: string)=>({type: 'IsErrorFilterAction_Act',value:value} as IsErrorFilterAction),
+    _showPrograss:(value:boolean)=>({type: 'ShowPrograssAction_Act',value:value} as ShowPrograssAction),
+    _showProgressTips:(value:string)=>({type: 'ShowProgressTipsAction_Act',value:value} as ShowProgressTipsAction),
     _descriptionFilter:(value: string)=>({type: 'DescriptionFilterAction_Act',value:value} as DescriptionFilterAction),
     _timeFilter:(value: string)=>({type: 'TimeFilterAction_Act',value:value} as TimeFilterAction),
     _init:():AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -122,7 +129,7 @@ export const reducer:Reducer<CPRKDState> = (state: CPRKDState | undefined, incom
             endDate:dayjs(dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss'), 'YYYY/MM/DD HH:mm:ss'),
             columnsData:new Array<_Row>(),
             columns:new Array<_Column>(),
-            currentindex:3,
+            currentindex:2,
             steps:new Array<StepsType>(),
             billTypes:new Array<BillType>(),
             selectBillTypes:new Array<string>(),
@@ -130,7 +137,9 @@ export const reducer:Reducer<CPRKDState> = (state: CPRKDState | undefined, incom
             dialogText:'',
             isErrorFilter:'all',
             descriptionFilter:'',
-            timeFilter:''
+            timeFilter:'',
+            showPrograss:false,
+            showProgressTips:'Loading',
      };
     }
 
@@ -162,6 +171,10 @@ export const reducer:Reducer<CPRKDState> = (state: CPRKDState | undefined, incom
             return { ...state, descriptionFilter: action.value };
         case 'TimeFilterAction_Act':
             return { ...state, timeFilter: action.value };
+        case 'ShowPrograssAction_Act':
+            return { ...state, showPrograss: action.value };
+        case 'ShowProgressTipsAction_Act':
+            return { ...state, showProgressTips: action.value };
         default:
             return state;
     }
