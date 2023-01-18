@@ -36,7 +36,9 @@ app.UseStaticFiles();
 app.UseRouting();
 //启用Cors中间件
 app.UseCors();
-app.MapHub<Robam_Sync.SignalRWebpack.ChatHub>("page/api/hub");
+app.MapHub<Robam_Sync.SignalRWebpack.ChatHub>("page/api/hub", option => {
+   
+});
 
 app.MapControllerRoute(
     name: "default",

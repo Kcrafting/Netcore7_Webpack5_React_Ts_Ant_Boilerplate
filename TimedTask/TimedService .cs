@@ -105,11 +105,11 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                     if (para_in_timingImport != null && Boolean.Parse(para_in_timingImport.value))
                     {
                         //启动导入
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("启用入库导入", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("启用入库导入", true);
                     }
                     else
                     {
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("未启用入库定时导入", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("未启用入库定时导入", true);
                     }
                     var para_in_billTypes = para.Where(i => i.label == "para_in_billTypes").FirstOrDefault();
                     var para_in_timingDelay = para.Where(i => i.label == "para_in_timingDelay").FirstOrDefault();
@@ -123,7 +123,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                 {
                                     if (para_in_timingTime == null)
                                     {
-                                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("入库导入时间点未设置", true);
+                                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("入库导入时间点未设置", true);
                                         break;
                                     }
                                     string d1 = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
@@ -133,7 +133,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         if (!exeState.BeenExecute && DateTime.Parse(exeState.LastExecuteTime).ToString("yyyy-MM-dd HH:mm") != DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
                                         {
                                             exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每天导入!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("执行每天导入!", true);
 
                                             if (para_in_billTypes != null && para_in_billTypes.value != "")
                                             {
@@ -157,7 +157,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                             }
                                             else
                                             {
-                                                Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔为每周时，导入间隔天数应该在周1-7范围内!", true);
+                                                Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("导入间隔为每周时，导入间隔天数应该在周1-7范围内!", true);
                                                 break;
                                             }
                                             if (DateTime.Now.DayOfWeek == (DayOfWeek)dayofweek - 1)
@@ -165,7 +165,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                                 if (!exeState.BeenExecute && DateTime.Parse(exeState.LastExecuteTime).ToString("yyyy-MM-dd HH:mm") != DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
                                                 {
                                                     exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                                    Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每周导入!", true);
+                                                    Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("执行每周导入!", true);
 
                                                     if (para_in_billTypes != null && para_in_billTypes.value != "")
                                                     {
@@ -177,14 +177,14 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         }
                                         else
                                         {
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔天数不能转换为数字!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("导入间隔天数不能转换为数字!", true);
                                             break;
                                         }
 
                                     }
                                     else
                                     {
-                                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔天数未设置", true);
+                                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("导入间隔天数未设置", true);
                                     }
                                     break;
                                 }
@@ -196,7 +196,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         if (DateTime.Now.ToString("yyyy-MM-dd HH:mm") == DateTime.Parse(exeState.LastExecuteTime).AddDays(delayday).ToString("yyyy-MM-dd HH:mm"))
                                         {
                                             exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每隔几天导入!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("执行每隔几天导入!", true);
 
                                             if (para_in_billTypes != null && para_in_billTypes.value != "")
                                             {
@@ -215,18 +215,18 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                     }
                     else
                     {
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔或导入时间点未设置!", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoInstock>("导入间隔或导入时间点未设置!", true);
                     }
                     //出库
                     var para_out_timingImport = para.Where(i => i.label == "para_in_timingImport").FirstOrDefault();
                     if (para_out_timingImport != null && Boolean.Parse(para_out_timingImport.value))
                     {
                         //启动导入
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("启用出库导入", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("启用出库导入", true);
                     }
                     else
                     {
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("未启用出库定时导入", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("未启用出库定时导入", true);
                     }
                     var para_out_billTypes = para.Where(i => i.label == "para_out_billTypes").FirstOrDefault();
                     var para_out_timingDelay = para.Where(i => i.label == "para_out_timingDelay").FirstOrDefault();
@@ -240,7 +240,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                 {
                                     if (para_out_timingTime == null)
                                     {
-                                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("入库导入时间点未设置", true);
+                                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("入库导入时间点未设置", true);
                                         break;
                                     }
                                     string d1 = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
@@ -250,7 +250,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         if (!exeState.BeenExecute && DateTime.Parse(exeState.LastExecuteTime).ToString("yyyy-MM-dd HH:mm") != DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
                                         {
                                             exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每天导入!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("执行每天导入!", true);
 
                                             if (para_out_billTypes != null && para_out_billTypes.value != "")
                                             {
@@ -274,7 +274,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                             }
                                             else
                                             {
-                                                Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔为每周时，导入间隔天数应该在周1-7范围内!", true);
+                                                Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("导入间隔为每周时，导入间隔天数应该在周1-7范围内!", true);
                                                 break;
                                             }
                                             if (DateTime.Now.DayOfWeek == (DayOfWeek)dayofweek - 1)
@@ -282,7 +282,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                                 if (!exeState.BeenExecute && DateTime.Parse(exeState.LastExecuteTime).ToString("yyyy-MM-dd HH:mm") != DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
                                                 {
                                                     exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                                    Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每周导入!", true);
+                                                    Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("执行每周导入!", true);
 
                                                     if (para_out_billTypes != null && para_out_billTypes.value != "")
                                                     {
@@ -294,14 +294,14 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         }
                                         else
                                         {
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔天数不能转换为数字!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("导入间隔天数不能转换为数字!", true);
                                             break;
                                         }
 
                                     }
                                     else
                                     {
-                                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔天数未设置", true);
+                                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("导入间隔天数未设置", true);
                                     }
                                     break;
                                 }
@@ -313,7 +313,7 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                                         if (DateTime.Now.ToString("yyyy-MM-dd HH:mm") == DateTime.Parse(exeState.LastExecuteTime).AddDays(delayday).ToString("yyyy-MM-dd HH:mm"))
                                         {
                                             exeState.LastExecuteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                            Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("执行每隔几天导入!", true);
+                                            Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("执行每隔几天导入!", true);
 
                                             if (para_out_billTypes != null && para_out_billTypes.value != "")
                                             {
@@ -332,12 +332,12 @@ namespace Netcore7_Webpack5_React_Ts_Ant_Boilerplate.TimedTask
                     }
                     else
                     {
-                        Utils.Utils.RecordStepNew<Sqlite_Models_Instock>("导入间隔或导入时间点未设置!", true);
+                        Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>("导入间隔或导入时间点未设置!", true);
                     }
                 }
                 catch(Exception exp)
                 {
-                    Utils.Utils.RecordStepNew<Sqlite_Models_Instock>(exp.Message, true);
+                    Utils.Utils.RecordStepNew<Sqlite_Models_AutoOutstock>(exp.Message, true);
                 }
                 //执行任务
                 await Task.Delay(1000 * 40, stoppingToken); //延迟暂停5秒

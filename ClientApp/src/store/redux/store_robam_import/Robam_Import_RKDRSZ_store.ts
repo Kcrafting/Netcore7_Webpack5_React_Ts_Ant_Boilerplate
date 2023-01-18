@@ -105,7 +105,7 @@ export const actionCreators = {
 
 
 
-                fetch(window.location.origin + "/" + `api/recordsyncautooutstock`, 
+                fetch(window.location.origin + "/" + `api/recordsyncautoinstock`, 
                 { 
                     method: 'POST',
                     headers: new Headers({

@@ -106,7 +106,7 @@ export const actionCreators = {
                     //dispatch({ type: 'MenuListAction_Act', value: undefined });
                 });
 
-                fetch(window.location.origin + "/" + `api/recordsyncautoinstock`, 
+                fetch(window.location.origin + "/" + `api/recordsyncautooutstock`, 
                 { 
                     method: 'POST',
                     headers: new Headers({

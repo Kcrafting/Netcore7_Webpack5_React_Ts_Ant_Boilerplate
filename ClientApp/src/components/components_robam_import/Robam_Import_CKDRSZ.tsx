@@ -144,10 +144,31 @@ const Robam_Import_RKDRSZ:React.FC<_CPRKDProp>=(props)=>{
         <Modal open={props.showgrid} 
     width={1000}
     closable = {false}
-        footer={<Button type="primary" onClick={()=>{
+        footer={
+        <>
+        <Button type="primary" onClick={()=>{
+            fetch(window.location.origin + "/" + `api/execute_clearlog`, { 
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body:JSON.stringify({FBillTypes:'',FStartDate:'',FEndDate:''}),})
+            .then(response => response.json() as any)
+            .then(data => {
+
+                window.alert('清理完成');
+                
+            })
+            .catch(err => {
+                
+            });
+        }}>清理日志</Button>
+        <Button type="primary" onClick={()=>{
             //props._showDialog(false);
             props._showgrid(false);
-        }}>确定</Button>}
+        }}>确定</Button>
+        </>
+    }
     >
         <SelfDataGrid 
         rows={props.rows as any} 

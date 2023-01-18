@@ -40,7 +40,7 @@ type _CPRKDProp =
 
 export interface _Row{
         key:any,
-        index:string,
+        index:any,
         errorTime?:string,
         description?:string,
         isError?:boolean,
@@ -60,8 +60,8 @@ export interface _Column{
     }
 
 export interface _SyncMessage{
-        IsDone:boolean,
-        Tips:string,
+        isDone:boolean,
+        tips:string,
     }
 export interface StepsType{
     title:string,
@@ -153,7 +153,6 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
     },[]);
     useEffect(()=>{
        
-        //FnsignalR();
         console.log('初始化SignlR');
         connection = new signalR.HubConnectionBuilder()
             .withUrl("api/hub",{withCredentials:true,skipNegotiation: true,transport: signalR.HttpTransportType.WebSockets})
@@ -162,48 +161,79 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
             Token:'',
             BillType:'INSTOCK'
         });
-        var psetFunc:any;
-        const setFunc = ()=> {
-            psetFunc = setTimeout(act, 1000)
-        };
-        cancelFunc= ()=> clearTimeout(psetFunc);
-        connection.on("ConnectionSlow",()=>{
-            console.log('SignlR状态,ConnectionSlow');
-        });
-        connection.on("Reconnecting",()=>{
-            console.log('SignlR状态,Reconnecting');
-        });
-        connection.on("Reconnected",()=>{
-            console.log('SignlR状态,Reconnected');
-        });
-        connection.on("Closed",()=>{
-            console.log('SignlR状态,Closed');
-        });
-        connection.start().then(()=>{
-            console.log('SignlR连接成功.发送信息');
-            setFunc();
+
+
+        // connection.on("starting",()=>{
+        //     console.log('SignlR状态,starting');
+        // });
+        // connection.on("received",()=>{
+        //     console.log('SignlR状态,received');
+        // });
+        // connection.on("connectionSlow ",()=>{
+        //     console.log('SignlR状态,connectionSlow ');
+        // });
+        // connection.on("reconnecting",()=>{
+        //     console.log('SignlR状态,reconnecting');
+        // });
+        //  connection.on("reconnected",()=>{
+        //     console.log('SignlR状态,reconnected');
+        // });
+        //  connection.on("stateChanged",()=>{
+        //     console.log('SignlR状态,stateChanged');
+        // });
+
+
+        connection.onclose(()=>{
+            console.log('SignlR状态,CallBack onclose');
+            dispatch({ type: 'ShowPrograssAction_Act', value: false });
+            dispatch({ type: 'ShowProgressTipsAction_Act', value: '到服务器的网络连接断开!' });
+            let temp =  props.columnsData?.concat([{key:null,index:999999,description:'到服务器的网络连接断开',isError:true,errorTime:'刚刚'}]);
+            console.log('temp__',temp)
+            dispatch({ type: 'ColumnsDataAction_Act', value: temp });
             
         })
-        console.log('初始化SignlR 1.' ,connection);
+        connection.onreconnected(()=>{
+            console.log('SignlR状态,CallBack onreconnected');
+        })
+        connection.onreconnecting(()=>{
+            console.log('SignlR状态,CallBack onreconnecting');
+        })
+        
+         connection.on("disconnected",()=>{
+            console.log('SignlR状态,disconnected');
+        });
         connection.on("messageReceived", (result:TableProps_) => {
-            //const m = document.createElement("div");
-            //m.innerHTML = `<div class="message-author">${username}</div><div>${message}</div>`;      
-            //divMessages.appendChild(m);
-            //divMessages.scrollTop = divMessages.scrollHeight;
-            if(result.columnType != undefined){
+            if(result?.columnType != undefined){
                 dispatch({ type: 'ColumnsAction_Act', value: result.columnType });
             }
-            if(result.rowData != undefined){
+            if(result?.rowData != undefined){
                 dispatch({ type: 'ColumnsDataAction_Act', value: result.rowData });
             }
-            
+            console.log('tips:',result?.syncMessage?.tips);
+            if(result?.syncMessage?.tips  != undefined){
+                dispatch({ type: 'ShowProgressTipsAction_Act', value: result.syncMessage.tips });
+            }
+            console.log('isDone:',result?.syncMessage?.isDone);
+            if(result?.syncMessage?.isDone  != undefined && result?.syncMessage?.isDone == true){
+                dispatch({ type: 'ShowPrograssAction_Act', value: false });
+            }
             console.log('SignalR 接收信息:',result)
             });
-        // const send =  (arg:string)=>connection.send("newMessage", 'ddd', arg)
-        //     .then(() => {
+        connection.start().then(()=>{
+            console.log('SignlR连接成功.发送信息');
+            //setFunc();
+            act();
+            
+        }).catch(err=>{
+            console.log('SignlR Start 时发生错误',err);
+        })
+        
+        console.log('初始化SignlR 1.' ,connection);
 
-        //     });
-        //     set_Func(send);
+            return ()=>{
+                //卸载
+                connection.stop();
+            }
     },[])
     const steps = [
         {
@@ -217,7 +247,7 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
           icon:<LoadingOutlined />
         },
         {
-          title: '进行导入',
+          title: props.showPrograss?'进行导入':'导入完成',
           content: 'Last-content',
           icon:<LoadingOutlined />
         },
@@ -301,7 +331,8 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
          />
 
             <Button style={{ margin: '10px' }} type="primary" onClick={()=>{
-      
+                dispatch({ type: 'ShowProgressTipsAction_Act', value: "开始导入" });
+                dispatch({ type: 'ShowPrograssAction_Act', value: true });
                 props._columnsData([]);
                 next();
                 fetch(window.location.origin + "/" + `api/syncinstock`, 
@@ -335,11 +366,14 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
      </>}
      {
         props.currentindex === 2 && 
-        <><h3>导入中</h3>
-        {
-            props.showDialog &&
-        <Spin tip={props.showProgressTips} size="large">
-        </Spin>
+        <>
+         {
+            props.showPrograss &&
+            <>
+            <h3>导入中</h3>
+            <Spin tip={props.showProgressTips} size="large">
+            </Spin>
+            </>
         }
         <SelfDataGrid 
         columns={props.columns as any} 
@@ -381,14 +415,14 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                     完成
                 </Button>
                 )} */}
-                 {(props.currentindex === steps.length - 1 && !props.showDialog) && (
+                 {(props.currentindex === steps.length - 1 && !props.showPrograss) && (
                     
                     <>
                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {props._currentIndex(0);}}>
                     重新导入
                 </Button>
-                 <Button style={{ margin: '8px' }} type="primary" onClick={() => {
-                     //func('hellow');
+                 {/* <Button style={{ margin: '8px' }} type="primary" onClick={() => {
+
                      fetch(window.location.origin + "/" + `api/test`, 
                         { 
                         method: 'POST',
@@ -400,20 +434,14 @@ const Robam_Import_CPRKD:React.FC<_CPRKDProp> = (props)=>{
                         .then(data => {
                             console.log('结果',data)
                             console.log('获得记录',dayjs(`${new Date()}`).format('YYYY/MM/DD HH:mm:ss').toString());
-                            //let oobj = parse(JSON.stringify(data.columnType)) as _Column[];
-                            //console.log('data',data);
-                            //console.log('data--->',JSON.stringify(data.columnType),'===>',data.columnType,'--->');
-                            // dispatch({ type: 'ColumnsAction_Act', value: data.columnType });
-                            // dispatch({ type: 'ColumnsDataAction_Act', value: data.rowData });
-                            //dispatch({ type: 'MenuListAction_Act', value: main as Settings[] });
                         })
                         .catch(err => {
-                            //dispatch({ type: 'MenuListAction_Act', value: undefined });
+                            
                         });
 
                  }}>
                  测试SignlR
-                </Button>
+                </Button> */}
                 </>
                 )}
                 {props.currentindex > 0 && props.currentindex !== steps.length - 1 && props.currentindex != 2 && (
