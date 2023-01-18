@@ -19,7 +19,12 @@ module.exports = {
           '/api': {
               target: 'https://localhost:7011',
               //pathRewrite: { '^/api': '' },
-              secure: false
+              secure: false,
+          },
+          '/page':{
+              target: 'https://localhost:7011',
+              secure: false,
+              ws: true,
           }
       }
   },
